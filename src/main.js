@@ -13,6 +13,7 @@ Vue.prototype.$axios = axios;
 import './utils/rem'
 //导入全局样式
 import './assets/css/GlobalStyle.css'
+import './assets/font-awesome-4.7.0/css/font-awesome.min.css'
 
 //使用iview2
 //http://v1.iviewui.com/docs/guide/start
