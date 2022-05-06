@@ -32,7 +32,6 @@
     height: 1.5em;
     margin-left: 2em;
     margin-right: 2em;
-
 }
 .bar i {
     font-size: 1.3em;
@@ -71,46 +70,46 @@
 <script>
 export default {
     name: "app",
-    data(){
-        return{
-            old:null,
-            current:null
-        }
+    data() {
+        return {
+            old: null,
+            current: null,
+        };
     },
-    mounted:function(){
-        this.current=document.getElementsByClassName('fa fa-cube')[0];
+    mounted: function () {
+        this.current = document.getElementsByClassName("fa fa-cube")[0];
     },
     methods: {
         navigateTo: function (url) {
             this.$router.replace(url);
         },
-        changeCurrent:function(e){
-            this.old=this.current;
-            this.current=e.target;
+        changeCurrent: function (e) {
+            this.old = this.current;
+            this.current = e.target;
         },
-        toDing:function(e){
+        toDing: function (e) {
             // console.log(e)
             this.changeCurrent(e);
-            this.$router.replace('/ding');
+            this.$router.replace("/ding");
         },
-        toPomodoro:function(e){
+        toPomodoro: function (e) {
             this.changeCurrent(e);
-            this.$router.replace('/pomodoro');
+            this.$router.replace("/pomodoro");
         },
-        toTodolist:function(e){
+        toTodolist: function (e) {
             this.changeCurrent(e);
-            this.$router.replace('/todolist');
-        }
+            this.$router.replace("/todolist");
+        },
     },
-    watch:{
-        current:function(){
+    watch: {
+        current: function () {
             // console.log(this.current)
-            this.current.style.color='rgb(55,88,247)'
-            if(this.old){
-                this.old.style.color='rgb(152, 152, 156)'
+            this.current.style.color = "rgb(55,88,247)";
+            if (this.old) {
+                this.old.style.color = "rgb(152, 152, 156)";
             }
-        }
-    }
+        },
+    },
 };
 </script>
 
