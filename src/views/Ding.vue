@@ -4,9 +4,18 @@
       <span>打卡</span>
     </div>
     <div class="datebar">
-      <div class="date" v-for="dayItem in dayItems ">
+      <div
+        class="date"
+        v-for="(dayItem,index) in dayItems "
+        @click="swapSelect(index,{year:dayItem.year,month:dayItem.month,day:dayItem.day})"
+      >
         <span>{{dayItem.dayText}}</span>
-        <span class="day">{{dayItem.dayNum}}</span>
+        <div v-if="index == selected" class="circle">
+          <span>{{dayItem.dayNum}}</span>
+        </div>
+        <div v-else>
+          <span class="day">{{dayItem.dayNum}}</span>
+        </div>
       </div>
       <!-- <div class="date">
         <span>一</span>
@@ -59,10 +68,17 @@ export default {
     dailyItem
   },
   mounted: function () {
+    var d = new Date();
+    this.year = d.getFullYear(); //获取年 
+    this.month = d.getMonth();//获取月  
+    this.day = d.getDate(); //获取当日
+    this.dayIdx = d.getDay();
+
     for (var i = 6; i >= 0; i--) {
       this.dayItems.push(this.getDayInfo(i));
     }
-    console.log(this.dayItems);
+
+    this.items = this.getTaskItems(this.year, this.month, this.day);
   },
   data: function () {
     return {
@@ -70,11 +86,23 @@ export default {
         { idx: 0, iconName: "#icon-youxi", title: "Play", finish: true, days: 0, },
         { idx: 1, iconName: "#icon-qingjie", title: "洗脸", finish: false, days: 1 },
       ],
-      year: 2022,
-      month: 5,
-      day: 6,
+      testItem: [
+        { idx: 2, iconName: "#icon-dianpu", title: "4S店", finish: false, days: 0, },
+        { idx: 2, iconName: "#icon-shipin1", title: "吃东西", finish: false, days: 0, },
+        { idx: 2, iconName: "#icon-fangchan", title: "买房", finish: false, days: 0, },
+        { idx: 2, iconName: "#icon-jipiao", title: "起飞", finish: false, days: 0, },
+        { idx: 2, iconName: "#icon-lianxu", title: "分身", finish: false, days: 0, },
+        { idx: 2, iconName: "#icon-diannao", title: "电脑", finish: false, days: 0, },
+        { idx: 2, iconName: "#icon-jiaju", title: "沙发", finish: false, days: 0, },
+      ],
+      year: 1,
+      month: 1,
+      day: 1,
+      dayIdx: 6,
+      dayName: ['日', '一', '二', '三', '四', '五', '六'],
       days: [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-      dayItems: []
+      dayItems: [],
+      selected: 6
     }
   }, methods: {
     convertFinish(idx) {
@@ -102,12 +130,31 @@ export default {
       if (day <= 0) {
         day = this.days[month - 1] - day;
       }
+
+      var dayIdx = ((this.dayIdx - idx) + 7) % 7;
+      console.log(idx + " " + dayIdx);
       info.dayNum = day;
-      info.dayText = this.getDayText(year, month, day);
+      if (day == this.day) {
+        info.dayNum = "今天";
+      }
+      info.dayText = this.dayName[dayIdx];
+      info.year = year; info.month = month; info.day = day;
 
       return info;
+    }, getTaskItems(year, month, day) {
+      var items = [
+        { idx: 0, iconName: "#icon-youxi", title: "Play", finish: true, days: 0, },
+        { idx: 1, iconName: "#icon-qingjie", title: "洗脸", finish: false, days: 1 },
+      ];
+      items.push(this.testItem[day % 7]);
+
+      return items;
+    }, swapSelect(idx, dayInfo) {
+      this.selected = idx;
+      this.items = this.getTaskItems(dayInfo.year, dayInfo.month, dayInfo.day);
     }
-  }
+  },
+
 };
 </script>
 
