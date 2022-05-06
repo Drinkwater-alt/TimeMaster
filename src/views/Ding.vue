@@ -108,11 +108,8 @@ export default {
     convertFinish(idx) {
       this.items[idx].finish = !this.items[idx].finish;
     },
-    getDayText(year, month, day) {
-      // 返回对应日期是星期几
-      return "一";
-    },
     getDayInfo(idx) {
+      // 获取比今天早idx天的日期数据
       var info = {};
       var year = this.year; var month = this.month; var day = this.day;
       day -= idx;
