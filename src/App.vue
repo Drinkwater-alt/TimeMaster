@@ -17,25 +17,25 @@
     bottom: 0;
     width: 100%;
     height: 2.8em;
-    display: flex;
-    justify-content: center;
 }
 .nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    width: 88%;
     height: 100%;
+    width: 80%;
+    margin: auto;
 }
 .bar {
     width: 1.5em;
     height: 1.5em;
-    margin-left: 2em;
-    margin-right: 2em;
     color: rgb(152, 152, 156);
+    font-size: 1.4em;
+    text-align: center;
 }
 .router-link-active {
     color: rgb(55, 88, 247);
+    
 }
 </style>
 
@@ -54,14 +54,14 @@
                 <label for="" class="bar" @click="toDing">
                     <i class="fa fa-cube bar" aria-hidden="true"></i>
                 </label> -->
-                <router-link :to="'/todolist'" class="bar" tag="div">
-                    <i class="fa fa-calendar-check-o" style="font-size:1.2em" aria-hidden="true"></i>
+                <router-link :to="'/todolist'" style="font-size:1.24em" class="bar" tag="div">
+                    <i class="fa fa-calendar-check-o"  aria-hidden="true"></i>
                 </router-link>
                 <router-link :to="'/pomodoro'" class="bar" tag="div">
-                    <i class="fa fa-bullseye" style="font-size:1.2em" aria-hidden="true"></i>
+                    <i class="fa fa-bullseye"  aria-hidden="true"></i>
                 </router-link>
                 <router-link :to="'/ding'" class="bar" tag="div">
-                    <i class="fa fa-clock-o" style="font-size:1.2em" aria-hidden="true"></i>
+                    <i class="fa fa-clock-o"  aria-hidden="true"></i>
                 </router-link>
             </div>
         </div>
