@@ -1,6 +1,8 @@
 @font-face {
-  font-family: "iconfont"; /* Project id  */
-  src: url('./iconfont.ttf?t=1651411695943') format('truetype');
+  font-family: "iconfont"; /* Project id 2984065 */
+  src: url('iconfont.woff2?t=1651804981702') format('woff2'),
+       url('iconfont.woff?t=1651804981702') format('woff'),
+       url('iconfont.ttf?t=1651804981702') format('truetype');
 }
 
 .iconfont {
@@ -12,11 +14,23 @@
 }
 
 .icon {
-  width: 1.8em;
-  height: 1.8em;
+  width: 1.5em;
+  height: 1.5em;
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+}
+
+.miniIcon {
+  width: 1.5em;
+  height: 1.15em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+.icon-duihao:before {
+  content: "\eaf1";
 }
 
 .icon-meizhuang:before {

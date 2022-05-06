@@ -1,10 +1,17 @@
 {
-  "id": "",
-  "name": "",
+  "id": "2984065",
+  "name": "no name",
   "font_family": "iconfont",
   "css_prefix_text": "icon-",
   "description": "",
   "glyphs": [
+    {
+      "icon_id": "12911864",
+      "name": "对勾",
+      "font_class": "duigou",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
     {
       "icon_id": "22789741",
       "name": "美妆",
