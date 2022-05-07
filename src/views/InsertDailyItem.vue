@@ -52,7 +52,7 @@
 <script>
 import "../assets/icon_custom/iconfont.js";
 
-import dailyItem from "@/views/DailyItem.vue";
+import dailyItem from "../components/DailyItem.vue";
 
 export default {
   components: {
