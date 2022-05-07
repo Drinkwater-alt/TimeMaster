@@ -5,29 +5,43 @@ import Pomodoro from '../views/Pomodoro'
 import Ding from '../views/Ding'
 import ToDoList from '../views/ToDoList'
 import InsertDailyItem from '../views/InsertDailyItem.vue'
+import Container from '../views/Container'
 
 Vue.use(VueRouter)
 
 const routes = [
     {
         path: '/',
-        component: Ding
-    },
-    {
-        path: '/todolist',
-        component: ToDoList
-    }, 
-    {
-        path: '/pomodoro',
-        component:Pomodoro
-    }, {
-        path: '/ding',
-        component:Ding
+        component: Container,
+        redirect:'/ding',
+        children: [
+            {
+                path: '/todolist',
+                component: ToDoList,
+                meta: {
+                    index:1
+                }
+            }, 
+            {
+                path: '/pomodoro',
+                component: Pomodoro,
+                meta: {
+                    index:2
+                }
+            }, {
+                path: '/ding',
+                component: Ding,
+                meta: {
+                    index:3
+                }
+            },
+        ]
     },
     {
         path: '/insertDailyItem',
         component:InsertDailyItem
     }
+
 
 ]
 
