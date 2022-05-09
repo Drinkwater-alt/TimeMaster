@@ -53,6 +53,7 @@
 import "../assets/icon_custom/iconfont.js";
 
 import dailyItem from "../components/DailyItem.vue";
+import { refreshSpireWords } from '../data/data.js'
 
 export default {
   components: {
@@ -65,17 +66,6 @@ export default {
     return {
       name: '每天进步一点点',
       inspire: '来TimeMaster里简单check每一天',
-      inspireWords: [
-        '来TimeMaster里简单check每一天',
-        '每一天都变得更好',
-        '始终保持激情',
-        '更好的事会一起到来',
-        '坚持就是胜利',
-        '时间不等人',
-        '生命由每个时刻构成',
-        '你所愿得都终将实现',
-        '认真对待一切'
-      ],
       currentIconName: "#icon-meizhuang",
       icons: [
         { name: '#icon-meizhuang' },
@@ -135,7 +125,7 @@ export default {
     }
   }, methods: {
     refreshSpireWords() {
-      this.inspire = this.inspireWords[Math.floor(Math.random() * this.inspireWords.length)];
+      this.inspire = refreshSpireWords();
     }, swapSelectIcon(idx) {
       this.currentIconName = this.icons[idx].name;
     }

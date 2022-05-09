@@ -28,6 +28,7 @@ Vue.use(ViewUI);
 Vue.prototype.$Message = Message
 
 
+
 new Vue({
     router,
     store,
