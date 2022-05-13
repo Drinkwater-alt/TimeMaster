@@ -1,11 +1,17 @@
 <template>
-  <div>
-    <div class="titlebar">
-      <span>新习惯</span>
-    </div>
+  <div style="height:100vh">
+    <div
+      style="display:flex;flex-direction:column;margin-left:.5em;margin-right:.5em"
+      v-if="!firstStepFinished"
+    >
+      <div style="display:flex;flex-direction:row;margin-top:1em">
+        <Icon type="md-arrow-back" @click="back()" />
+        <div class="titlebar" style="margin-left:2.5rem">
+          <span>新习惯</span>
+        </div>
+      </div>
 
-    <div style="display:flex;flex-direction:column;margin-left:.5em;margin-right:.5em">
-      <div class="circleRec">
+      <div class="circleRec" style="margin-top:1.75rem;">
         <p style="color:#222;font-size:2.25rem">习惯名称</p>
         <Input
           class="inputBox"
@@ -18,47 +24,42 @@
 
       <div class="circleRec" style="margin-top:1.75rem;">
         <p style="color:#222;font-size:2.25rem">图标</p>
-        <svg
-          class="icon svg-icon"
-          style="top:0;bottom:0;margin:auto;margin-left:2.5vw;margin-right:0vw;"
-          aria-hidden="true"
-        >
-          <use :xlink:href="currentIconName" />
-        </svg>
-        <div style="display:flex;flex-directino:row;margin-top:0.3em;">
+        <div style="margin-top:1rem;position:flex;flex-direction:row">
+          <svg
+            class="largeIcon svg-icon"
+            style="top:0;bottom:0;margin:auto;margin-right:0vw;"
+            aria-hidden="true"
+          >
+            <use :xlink:href="currentIconName" />
+          </svg>
+        </div>
+
+        <div style="display:flex;flex-directino:row;flex-wrap:wrap;margin-top:0.3em;">
           <div v-for="(icon,index) in icons">
             <svg
               @click="swapSelectIcon(index)"
-              v-if="index < 5"
-              class="icon svg-icon"
-              style="top:0;bottom:0;margin:auto;margin-left:2.5vw;margin-right:0vw;"
+              class="midIcon svg-icon"
+              style="top:0;bottom:0;margin:auto;margin-right:0vw;"
               aria-hidden="true"
             >
               <use :xlink:href="icon.name" />
-            </svg>
-            <svg
-              class="miniIcon svg-icon"
-              style="top:0;bottom:0;margin:auto;margin-left:2.5vw;margin-right:0vw;"
-              aria-hidden="true"
-            >
-              <use xlink:href="#icon-duigou" />
             </svg>
           </div>
         </div>
       </div>
 
       <div class="circleRec" style="margin-top:1.75rem">
-        <div style="display:flex;flex-direction:row">
-          <p style="color:#222;font-size:2.25rem">鼓励语</p>
+        <div style="display:flex;flex-direction:row;width:88vw">
+          <p style="color:#222;font-size:2.25rem;">鼓励语</p>
+          <Icon
+            type="md-refresh"
+            size="20"
+            color="blue"
+            style=" margin-left: 70vw; "
+            @click="refreshSpireWords()"
+          />
         </div>
-        <Icon
-          type="refresh"
-          size="50"
-          color="black"
-          style="width:5vw;"
-          @click="refreshSpireWords()"
-        />
-        <Icon type="arrow-right-c"></Icon>
+
         <Input
           class="inputBox"
           icon="ios-close"
@@ -66,6 +67,59 @@
           style="margin-top:.5em;"
           v-model="inspire"
         />
+      </div>
+      <Button
+        type="primary"
+        size="large"
+        style="position: fixed;bottom:3rem;width:95vw;"
+        @click="firstStepFinish()"
+      >
+        <p style="font-size:2.25rem;">下一步</p>
+      </Button>
+    </div>
+
+    <div style="display:flex;flex-direction:column;margin-left:.5em;margin-right:.5em" v-else>
+      <div style="display:flex;flex-direction:row;margin-top:1em">
+        <Icon type="md-arrow-back" @click="back()" />
+        <div class="titlebar" style="margin-left:2.5rem">
+          <span>新习惯</span>
+        </div>
+      </div>
+
+      <div class="circleRec" style="margin-top:1.75rem;">
+        <p style="color:#222;font-size:2.25rem">频率</p>
+        <Tabs size="small" value="name1">
+          <TabPane label="按天" name="name1">
+            <div style="display:flex;flex-direction:row;margin-bottom:.5rem">
+              <div v-for="(item,index) in days" @click="selectDay(index)">
+                <div class="miniCircle" style="margin-right:.55em" v-if="item.select">
+                  <p
+                    style="color:#fff;line-height:2.25em;text-align:center;font-size:.9em;height:100%;width:100%"
+                  >{{item.name}}</p>
+                </div>
+                <div class="miniCircle" style="margin-right:.55em;background-color:#efefef" v-else>
+                  <p
+                    style="color:#0f0f0f;line-height:2.25em;text-align:center;font-size:.9em;height:100%;width:100%"
+                  >{{item.name}}</p>
+                </div>
+              </div>
+            </div>
+          </TabPane>
+          <TabPane label="按周" name="name2">
+            <Alert type="warning" show-icon style="font-size:.5em">
+              <p style="font-size:.75em">会员内容</p>
+            </Alert>
+          </TabPane>
+          <TabPane label="按时间间隔" name="name3">
+            <Alert type="warning" show-icon style="font-size:.5em">
+              <p style="font-size:.75em">会员内容</p>
+            </Alert>
+          </TabPane>
+        </Tabs>
+      </div>
+
+      <div class="circleRec" style="margin-top:1.75rem;">
+        <p style="color:#222;font-size:2.25rem">目标</p>
       </div>
     </div>
   </div>
@@ -82,13 +136,32 @@ export default {
     dailyItem
   },
   mounted: function () {
+    for (var i = 1; i <= 7; i++) {
+      this.sevenDays.push(i);
+    }
+
+    for (var i = 1; i <= 30; i++) {
+      this.thirtyDays.push(i);
+    }
 
   },
   data: function () {
     return {
       name: '每天进步一点点',
+      firstStepFinished: true,
       inspire: '来TimeMaster里简单check每一天',
       currentIconName: "#icon-meizhuang",
+      days: [
+        { name: '日', select: true },
+        { name: '一', select: true },
+        { name: '二', select: true },
+        { name: '三', select: true },
+        { name: '四', select: true },
+        { name: '五', select: true },
+        { name: '六', select: true }
+      ],
+      sevenDays: [],
+      thirtyDays: [],
       icons: [
         { name: '#icon-meizhuang' },
         { name: '#icon-jiadian' },
@@ -150,6 +223,17 @@ export default {
       this.inspire = refreshSpireWords();
     }, swapSelectIcon(idx) {
       this.currentIconName = this.icons[idx].name;
+    }, back() {
+      if (!this.firstStepFinished) {
+        this.$router.back();
+      } else {
+        this.firstStepFinished = false;
+      }
+    }, firstStepFinish() {
+      console.log("CHECK");
+      this.firstStepFinished = true;
+    }, selectDay(idx) {
+      this.days[idx].select = !this.days[idx].select;
     }
   },
 
@@ -162,8 +246,8 @@ export default {
   height: 5%;
 }
 .titlebar span {
-  font-size: 0.8em;
-  font-weight: 900;
+  font-size: 1em;
+  font-weight: 920;
   color: black;
 }
 .datebar {
@@ -220,5 +304,12 @@ export default {
   background-color: #ededed;
   border: none;
   outline: medium;
+}
+
+.miniCircle {
+  background-color: rgb(56, 87, 245);
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
 }
 </style>

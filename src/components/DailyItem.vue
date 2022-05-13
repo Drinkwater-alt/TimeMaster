@@ -1,5 +1,5 @@
 <template>
-  <div style="display:flex;background-color:#ffffff;width:95vw;height:3.1em;">
+  <div style="display:flex;background-color:rgba(0,0,0,0);width:95vw;height:3.1em;">
     <!-- 图标 -->
     <svg
       v-if="!info.finish"
@@ -102,5 +102,14 @@ export default {
   text-align: center;
   padding: 10px 0 20px;
   color: #9ea7b4;
+}
+.circleRec {
+  border-radius: 1rem;
+  background-color: #fdfdfd;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  padding-top: 0.5em;
+  padding-bottom: 1em;
+  box-shadow: 1.5px 1.5px 5px rgba(0, 0, 0, 0.2);
 }
 </style>

@@ -38,6 +38,7 @@ var items =  [
         title: "Play",
         finish: true,
         days: 0,
+        inspire:'Hello'
     },
     {
         idx: 1,

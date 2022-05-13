@@ -21,6 +21,23 @@
   overflow: hidden;
 }
 
+.largeIcon {
+  width: 2.25em;
+  height: 2.25em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+.midIcon{
+  width: 1.75em;
+  height: 1.75em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+
 .miniIcon {
   width: 1.5em;
   height: 1.15em;

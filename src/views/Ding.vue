@@ -59,12 +59,24 @@
 .cardsbar {
   /* height: 82%; */
   margin-top: 0.5em;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2); */
+  box-shadow: 1.5px 1.5px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 0.5em;
+  background-color: #ffffff;
 }
 .add {
   position: absolute;
   right: 0.2em;
   bottom: 0.5em;
+}
+.circleRec {
+  border-radius: 1rem;
+  background-color: #fdfdfd;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  padding-top: 0.5em;
+  padding-bottom: 1em;
+  box-shadow: 1.5px 1.5px 5px rgba(0, 0, 0, 0.2);
 }
 </style>
 <template>
@@ -94,7 +106,7 @@
       </div>
     </div>
 
-    <div class="cardsbar">
+    <Cards class="cardsbar">
       <transition
         name="ding"
         enter-class="zero"
@@ -111,9 +123,11 @@
           </div>
         </div>
       </transition>
-    </div>
+    </Cards>
 
-    <add-button class="add"></add-button>
+    <div @click="toInsertDailyItem()">
+      <add-button class="add"></add-button>
+    </div>
   </div>
 </template>
 
@@ -218,6 +232,10 @@ export default {
         console.log(this.show);
       }, 500);
     },
+    toInsertDailyItem() {
+      console.log("CHECK")
+      this.$router.push('/InsertDailyItem');
+    }
   },
 };
 </script>
