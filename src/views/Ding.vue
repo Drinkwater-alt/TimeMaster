@@ -51,6 +51,7 @@ import "../assets/icon_custom/iconfont.js";
 
 import dailyItem from "../components/DailyItem.vue";
 import { getTaskItems } from "../data/data.js"
+import DataBase from "../data/data.js"
 
 export default {
   components: {

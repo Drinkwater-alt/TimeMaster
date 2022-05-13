@@ -4,14 +4,20 @@
       <span>新习惯</span>
     </div>
 
-    <div style="display:flex;flex-direction:column">
-      <div>
-        <p>习惯名称：</p>
-        <input v-model="name" />
+    <div style="display:flex;flex-direction:column;margin-left:.5em;margin-right:.5em">
+      <div class="circleRec">
+        <p style="color:#222;font-size:2.25rem">习惯名称</p>
+        <Input
+          class="inputBox"
+          icon="ios-close"
+          size="large"
+          style="margin-top:.5em;"
+          v-model="name"
+        />
       </div>
 
-      <div style="margin-top:0.8em;">
-        <p>图标</p>
+      <div class="circleRec" style="margin-top:1.75rem;">
+        <p style="color:#222;font-size:2.25rem">图标</p>
         <svg
           class="icon svg-icon"
           style="top:0;bottom:0;margin:auto;margin-left:2.5vw;margin-right:0vw;"
@@ -30,18 +36,34 @@
             >
               <use :xlink:href="icon.name" />
             </svg>
+            <svg
+              class="miniIcon svg-icon"
+              style="top:0;bottom:0;margin:auto;margin-left:2.5vw;margin-right:0vw;"
+              aria-hidden="true"
+            >
+              <use xlink:href="#icon-duigou" />
+            </svg>
           </div>
         </div>
       </div>
 
-      <div style="margin-top:0.5em">
+      <div class="circleRec" style="margin-top:1.75rem">
         <div style="display:flex;flex-direction:row">
-          <p>鼓励语</p>
-          <button @click="refreshSpireWords()">刷新</button>
+          <p style="color:#222;font-size:2.25rem">鼓励语</p>
         </div>
-
-        <input
-          style="font-size:0.5em;padding:1em;width:35em;background-color:#eaeaea;border:none"
+        <Icon
+          type="refresh"
+          size="50"
+          color="black"
+          style="width:5vw;"
+          @click="refreshSpireWords()"
+        />
+        <Icon type="arrow-right-c"></Icon>
+        <Input
+          class="inputBox"
+          icon="ios-close"
+          size="large"
+          style="margin-top:.5em;"
           v-model="inspire"
         />
       </div>
@@ -179,5 +201,24 @@ export default {
 }
 .cardsbar {
   height: 85%;
+}
+.circleRec {
+  border-radius: 1rem;
+  background-color: #fdfdfd;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  padding-top: 0.5em;
+  padding-bottom: 1em;
+  box-shadow: 1.5px 1.5px 5px rgba(0, 0, 0, 0.2);
+}
+.inputBox {
+  /* border-radius: 0.8rem; */
+  font-size: 2.25rem;
+  width: 88vw;
+  /* padding: 0.66em; */
+  /* padding-left: 0.9em; */
+  background-color: #ededed;
+  border: none;
+  outline: medium;
 }
 </style>
