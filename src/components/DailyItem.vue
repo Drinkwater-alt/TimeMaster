@@ -1,5 +1,5 @@
 <template>
-  <div style="display:flex;background-color:rgba(0,0,0,0);width:95vw;height:3.1em;">
+  <div style="display:flex;background-color:rgba(0,0,0,0);width:90vw;height:2.5em;">
     <!-- 图标 -->
     <svg
       v-if="!info.finish"
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import { items } from '../data/data.js';
+
 export default {
   methods: {
 
@@ -54,7 +56,7 @@ export default {
     }
   }, methods: {
     convertFinish(idx) {
-      this.$parent.convertFinish(idx);
+      items[idx].finish = !items[idx].finish;
     }
   }
 };

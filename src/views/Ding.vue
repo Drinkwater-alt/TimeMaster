@@ -60,7 +60,7 @@
   /* height: 82%; */
   margin-top: 0.5em;
   /* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2); */
-  box-shadow: 1.5px 1.5px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0.5px 0.5px 0px rgba(0, 0, 0, 0.2);
   border-radius: 0.5em;
   background-color: #ffffff;
 }
@@ -106,7 +106,7 @@
       </div>
     </div>
 
-    <Cards class="cardsbar">
+    <Card class="cardsbar">
       <transition
         name="ding"
         enter-class="zero"
@@ -117,13 +117,21 @@
         leave-to-class="zero"
       >
         <!-- <div v-if="show">ni shi tuo shi</div> -->
-        <div style="width: 10vw; height: 10vh" v-if="show">
+        <!-- <div style="width: 10vw; height: 10vh" v-if="show">
           <div v-for="(item, index) in items" :key="index">
             <dailyItem :info="item"></dailyItem>
           </div>
-        </div>
+        </div>-->
+        <List v-bind:items="items">
+          <template v-slot:item="{ item }">
+            <div style="display: flex">
+              <dailyItem :info="item"></dailyItem>
+            </div>
+            <span>{{ item.date }}</span>
+          </template>
+        </List>
       </transition>
-    </Cards>
+    </Card>
 
     <div @click="toInsertDailyItem()">
       <add-button class="add"></add-button>
@@ -135,12 +143,13 @@
 import "../assets/icon_custom/iconfont.js";
 
 import dailyItem from "../components/DailyItem.vue";
-import { getTaskItems } from "../data/data.js";
+import { getTaskItems, items } from "../data/data.js";
 import AddButton from '../components/AddButton'
-
+import Card from '../components/Card'
+import List from '../components/List'
 export default {
   components: {
-    dailyItem, AddButton
+    dailyItem, AddButton, Card, List
   },
   mounted: function () {
     var d = new Date();
@@ -210,7 +219,6 @@ export default {
       }
 
       var dayIdx = (this.dayIdx - idx + 7) % 7;
-      console.log(idx + " " + dayIdx);
       info.dayNum = day;
       if (day == this.day) {
         info.dayNum = "今天";
@@ -224,16 +232,13 @@ export default {
     },
     swapSelect(idx, dayInfo) {
       this.show = false;
-      console.log(this.show);
       this.selected = idx;
       this.items = getTaskItems(dayInfo.year, dayInfo.month, dayInfo.day);
       setTimeout(() => {
         this.show = true;
-        console.log(this.show);
       }, 500);
     },
     toInsertDailyItem() {
-      console.log("CHECK")
       this.$router.push('/InsertDailyItem');
     }
   },

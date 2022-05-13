@@ -94,12 +94,12 @@
               <div v-for="(item,index) in days" @click="selectDay(index)">
                 <div class="miniCircle" style="margin-right:.55em" v-if="item.select">
                   <p
-                    style="color:#fff;line-height:2.25em;text-align:center;font-size:.9em;height:100%;width:100%"
+                    style="color:#fff;line-height:2.25em;text-align:center;font-size:2.4rem;font-weight:400 ;height:100%;width:100%"
                   >{{item.name}}</p>
                 </div>
                 <div class="miniCircle" style="margin-right:.55em;background-color:#efefef" v-else>
                   <p
-                    style="color:#0f0f0f;line-height:2.25em;text-align:center;font-size:.9em;height:100%;width:100%"
+                    style="color:#0f0f0f;line-height:2.25em;text-align:center;font-size:2.4rem;font-weight:400 ;height:100%;width:100%"
                   >{{item.name}}</p>
                 </div>
               </div>
@@ -309,7 +309,7 @@ export default {
 .miniCircle {
   background-color: rgb(56, 87, 245);
   border-radius: 50%;
-  width: 2em;
-  height: 2em;
+  width: 5.5rem;
+  height: 5.5rem;
 }
 </style>

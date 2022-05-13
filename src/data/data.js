@@ -1,11 +1,12 @@
 
 export { //很关键
     getTaskItems,
-    refreshSpireWords
+    refreshSpireWords,
+    items
 }
 
 function getTaskItems(year, month, day) {
-      var items = [
+      items = [
         {
           idx: 0,
           iconName: "#icon-youxi",
