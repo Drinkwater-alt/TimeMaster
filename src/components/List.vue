@@ -28,13 +28,6 @@ export default {
         &:last-child {
             border-bottom: none;
         }
-        a {
-            color: #777;
-        }
-        span {
-            font-size: 0.5rem;
-            color: #888;
-        }
     }
 }
 </style>
