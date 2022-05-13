@@ -10,6 +10,8 @@
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
     "iview": "^3.5.4",
+    "less": "^4.1.2",
+    "less-loader": "^7.3.0",
     "qweather-icons": "^1.1.0",
     "view-design": "^4.7.0",
     "vue": "^2.6.11",

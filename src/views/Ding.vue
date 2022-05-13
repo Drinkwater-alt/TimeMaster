@@ -1,3 +1,72 @@
+
+<style scoped>
+@import "../assets/icon_custom/iconfont.css";
+
+.zero {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+.one {
+  opacity: 1;
+  transform: translateX(0);
+}
+.active {
+  transition: all 0.5s ease;
+  position: absolute;
+}
+
+.titlebar {
+  height: 5%;
+}
+.titlebar span {
+  font-size: 0.8em;
+  font-weight: 900;
+  color: black;
+}
+.datebar {
+  height: 10%;
+  padding-top: 0.5em;
+  display: flex;
+  justify-content: space-between;
+}
+.datebar span {
+  font-size: 0.6em;
+  display: block;
+  text-align: center;
+}
+.date {
+  width: 8%;
+  position: relative;
+}
+.day {
+  color: black;
+  margin-top: 0.6em;
+}
+.circle {
+  background-color: rgb(56, 87, 245);
+  width: 2em;
+  height: 1.6em;
+  border-radius: 45%;
+  text-align: center;
+  line-height: 1.6em;
+  position: absolute;
+  left: -0.23em;
+}
+.circle span {
+  color: white;
+  font-size: 0.6em;
+}
+.cardsbar {
+  /* height: 82%; */
+  margin-top: 0.5em;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+.add {
+  position: absolute;
+  right: 0.2em;
+  bottom: 0.5em;
+}
+</style>
 <template>
   <div>
     <div class="titlebar">
@@ -43,6 +112,8 @@
         </div>
       </transition>
     </div>
+
+    <add-button class="add"></add-button>
   </div>
 </template>
 
@@ -50,12 +121,12 @@
 import "../assets/icon_custom/iconfont.js";
 
 import dailyItem from "../components/DailyItem.vue";
-import { getTaskItems } from "../data/data.js"
-import DataBase from "../data/data.js"
+import { getTaskItems } from "../data/data.js";
+import AddButton from '../components/AddButton'
 
 export default {
   components: {
-    dailyItem
+    dailyItem, AddButton
   },
   mounted: function () {
     var d = new Date();
@@ -141,79 +212,12 @@ export default {
       this.show = false;
       console.log(this.show);
       this.selected = idx;
-      this.items = getTaskItems(
-        dayInfo.year,
-        dayInfo.month,
-        dayInfo.day
-      );
+      this.items = getTaskItems(dayInfo.year, dayInfo.month, dayInfo.day);
       setTimeout(() => {
         this.show = true;
         console.log(this.show);
-      }, 5000);
+      }, 500);
     },
   },
 };
 </script>
-
-<style scoped>
-@import "../assets/icon_custom/iconfont.css";
-
-.zero {
-  opacity: 0;
-  transform: translateX(-100%);
-}
-.one {
-  opacity: 1;
-  transform: translateX(0);
-}
-.active {
-  transition: all 2s ease;
-  position: absolute;
-}
-
-.titlebar {
-  height: 5%;
-}
-.titlebar span {
-  font-size: 0.8em;
-  font-weight: 900;
-  color: black;
-}
-.datebar {
-  height: 10%;
-  padding-top: 0.5em;
-  display: flex;
-  justify-content: space-between;
-}
-.datebar span {
-  font-size: 0.6em;
-  display: block;
-  text-align: center;
-}
-.date {
-  width: 8%;
-  position: relative;
-}
-.day {
-  color: black;
-  margin-top: 0.6em;
-}
-.circle {
-  background-color: rgb(56, 87, 245);
-  width: 2em;
-  height: 1.6em;
-  border-radius: 45%;
-  text-align: center;
-  line-height: 1.6em;
-  position: absolute;
-  left: -0.23em;
-}
-.circle span {
-  color: white;
-  font-size: 0.6em;
-}
-.cardsbar {
-  height: 82%;
-  margin-top: 0.5em;
-}
-</style>
