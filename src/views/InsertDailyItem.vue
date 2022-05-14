@@ -99,7 +99,7 @@
                 </div>
                 <div class="miniCircle" style="margin-right:.55em;background-color:#efefef" v-else>
                   <p
-                    style="color:#0f0f0f;line-height:2.25em;text-align:center;font-size:2.4rem;font-weight:400 ;height:100%;width:100%"
+                    style="color:#0f0f0f;line-height:2.25em;text-align:center;font-size:2.4rem;font-weight:400;height:100%;width:100%"
                   >{{item.name}}</p>
                 </div>
               </div>
@@ -118,10 +118,115 @@
         </Tabs>
       </div>
 
-      <div class="circleRec" style="margin-top:1.75rem;">
-        <p style="color:#222;font-size:2.25rem">目标</p>
+      <div class="circleRec" style="margin-top:1.75rem;padding-bottom:.5em">
+        <div
+          style="width:90wh;display:flex;flex-direction:row;justify-content: space-between
+"
+          @click="showTargetBoard = true"
+        >
+          <p style="color:#222;font-size:2.25rem">目标</p>
+          <div style="display:flex;display-direction:row;">
+            <p style="color:#aaaaaa;font-size:2rem;">{{targetText}}</p>
+            <Icon type="ios-arrow-forward" color="#bbbbbb" style="margin-left:.5rem" />
+          </div>
+        </div>
+        <div
+          style="width:90wh;display:flex;flex-direction:row;justify-content: space-between;padding-top:3rem;
+"
+          @click="showSelectDayBoard = true"
+        >
+          <p style="color:#222;font-size:2.25rem">坚持天数</p>
+          <div style="display:flex;display-direction:row;">
+            <p style="color:#aaaaaa;font-size:2rem;">{{dayCircle}}</p>
+            <Icon type="ios-arrow-forward" color="#bbbbbb" style="margin-left:.5rem" />
+          </div>
+        </div>
       </div>
+      <Button
+        type="primary"
+        size="large"
+        style="position: fixed;bottom:3rem;width:95vw;"
+        @click="firstStepFinish()"
+      >
+        <p style="font-size:2.25rem;">保存</p>
+      </Button>
     </div>
+
+    <!-- 选择目标面板 -->
+    <Modal
+      v-show="!hideTargetBoard"
+      v-model="showTargetBoard"
+      title="目标"
+      @on-ok="confirmSetTarget()"
+      @on-cancel="showTargetBoard = false"
+    >
+      <RadioGroup v-model="targetBoard.type" vertical>
+        <Radio label="onceADay">
+          <span style="margin-left:1.5rem;font-size:2.2rem;color:#222">当天完成打卡</span>
+        </Radio>
+        <Radio label="quantityADay">
+          <span style="margin-left:1.5rem;font-size:2.2rem;color:#222">当天完成一定量</span>
+        </Radio>
+
+        <!-- 选择当天完成一定量时，设定打卡数量的面板 -->
+        <div
+          v-show="targetBoard.type == 'quantityADay'"
+          style="display:flex;flex-display:row;padding-top:2rem;width:90vw;"
+        >
+          <span style="margin-left:1.5rem;font-size:2.2rem;color:#222;margin-top:.5rem">每天</span>
+          <!-- 次数输入框 -->
+          <Input v-model="targetBoard.dayTargetCount" style="width:20%;margin-left:8%;" />
+          <!-- 单位的选择框 -->
+          <i-select
+            v-model="targetBoard.countUnit"
+            style="width:40%;margin-left:5%"
+            @on-change="changeUnit"
+          >
+            <Option v-for="item in targetBoard.countUnits" :value="item" :key="item">{{ item }}</Option>
+          </i-select>
+        </div>
+      </RadioGroup>
+    </Modal>
+
+    <!-- 自定义单位时出现的输入面板 -->
+    <Modal
+      v-model="showCustomUnit"
+      title="自定义单位"
+      @on-ok="confirmSetCustomUnit"
+      @on-cancel="cancelSetCustomUnit"
+    >
+      <Input
+        placeholder="请输入单位"
+        v-model="targetBoard.customUnitInput"
+        style="width:50%;margin-left:8%;"
+      />
+    </Modal>
+
+    <!-- 选择坚持天数面板 -->
+    <Modal
+      v-model="showSelectDayBoard"
+      title="坚持天数"
+      @on-cancel="cancelSelectDay()"
+      @on-ok="confirmSelectDay()"
+    >
+      <div style="display:flex;flex-direction:column">
+        <RadioGroup v-model="selectDayBoard.dayCircle" vertical @on-change="changeSelectDay">
+          <Radio v-for="item in selectDayBoard.daySelects" :label="item" :key="item">
+            <span style="margin-left:1.5rem;font-size:2.2rem;color:#222">{{item}}</span>
+          </Radio>
+        </RadioGroup>
+
+        <!-- 自定义天数 -->
+        <InputNumber
+          style="margin-top:1.5rem"
+          v-show="showCustomDay"
+          controls-outside
+          :max="365"
+          :min="1"
+          v-model="selectDayBoard.customDay"
+        ></InputNumber>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -147,6 +252,30 @@ export default {
   },
   data: function () {
     return {
+      showTargetBoard: false,
+      showSelectDayBoard: false,
+      showCustomUnit: false,
+      hideTargetBoard: false,
+      showCustomDay: false,
+      dayCircle: '永远',
+      targetText: '当天完成打卡',
+      targetBoard: {
+        //选中的类型
+        type: 'onceADay',
+        // 当天完成打卡还是当天完成一定量
+        onceADay: true,
+        quantityADay: false,
+        // 当天完成一定量的话，每天完成的次数和单位
+        dayTargetCount: 1, // 目标数量
+        countUnit: '次',
+        countUnits: ['次', '杯', '毫升', '分钟', '小时', '公里', '页', '自定义'],
+        customUnitInput: ''
+      },
+      selectDayBoard: {
+        dayCircle: '永远',
+        daySelects: ['永远', '7天', '21天', '30天', '100天', '365天', '自定义'],
+        customDay: 1
+      },
       name: '每天进步一点点',
       firstStepFinished: true,
       inspire: '来TimeMaster里简单check每一天',
@@ -234,8 +363,73 @@ export default {
       this.firstStepFinished = true;
     }, selectDay(idx) {
       this.days[idx].select = !this.days[idx].select;
+    }, changeUnit(val) {
+      if (val == '自定义') {
+        this.showCustomUnit = true;
+        this.hideTargetBoard = true;
+        this.targetBoard.customUnitInput = '';
+      }
+    }, cancelSetCustomUnit() {
+      this.showCustomUnit = false;
+      this.hideTargetBoard = false;
+    }, confirmSetCustomUnit() {
+      // 获取自定义单位的输入
+
+      if (this.targetBoard.customUnitInput == '' || this.targetBoard.customUnitInput == '自定义') {
+        this.targetBoard.customUnitInput = '烫烫烫';
+      }
+
+      var customUnitInput = this.targetBoard.customUnitInput;
+      // 插入自定义项
+      if (this.targetBoard.countUnits[this.targetBoard.countUnits.length - 1] != '自定义') {
+        this.targetBoard.countUnits[this.targetBoard.countUnits.length - 1] = customUnitInput;
+      } else {
+        this.targetBoard.countUnits.push(customUnitInput);
+      }
+      // 绑定选中项
+      this.targetBoard.countUnit = customUnitInput;
+      //关闭窗口
+      this.showCustomUnit = false;
+      this.hideTargetBoard = false;
+    }, confirmSetTarget() {
+      console.log(this.targetBoard.countUnit);
+
+      if (this.targetBoard.type == 'onceADay') {
+        this.targetText = '当天完成打卡';
+      } else {
+        this.targetText = this.targetBoard.dayTargetCount + this.targetBoard.countUnit + "/天";
+      }
+
+      // 如果countUnits中留存有自定义项且当前未选中该自定义项，将其删除
+      if (this.targetBoard.countUnits[this.targetBoard.countUnits.length - 1] != '自定义') {
+        if (this.targetBoard.countUnit != this.targetBoard.countUnits[this.targetBoard.countUnits.length - 1]) {
+          this.targetBoard.countUnits.pop();
+        }
+      }
+
+      this.showTargetBoard = false;
+    }, changeSelectDay(val) {
+      if (val == '自定义') {
+        this.showCustomDay = true;
+        this.selectDayBoard.customDay = 1;
+      }
+    }, cancelSelectDay() {
+      if (this.selectDayBoard.dayCircle != '自定义') {
+        this.showCustomDay = false;
+      }
+      // reset custom Day
+      this.selectDayBoard.customDay = 1;
+    }, confirmSelectDay() {
+      if (this.selectDayBoard.dayCircle == '自定义') {
+        this.dayCircle = this.selectDayBoard.customDay + "天";
+      } else {
+        this.showCustomDay = false;
+        this.dayCircle = this.selectDayBoard.dayCircle;
+      }
+
+      this.showSelectDayBoard = false;
     }
-  },
+  }
 
 };
 </script>
