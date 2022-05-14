@@ -1,40 +1,46 @@
 <template>
-    <div>
+    <div v-on:click="hidden">
         <add-button class="addbutton"></add-button>
+        <!-- 头部 -->
         <div class="header">
             <span>TODOLIST</span>
-            <label for="">
+            <label for="" v-on:click="show" @click.stop="show"> 
                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
             </label>
         </div>
+        <!-- 主体 -->
         <div class="body">
+            <!-- 未完成的列表 -->
             <Card class="completing">
                 <List v-bind:items="plan">
                     <template v-slot:item="{ item }">
-                        <div style="display: flex">
+                        <div class="group-title">
                             <CheckBox></CheckBox>
                             <span style="color: #333">{{ item.content }}</span>
                         </div>
-                        <span>{{ item.date }}</span>
+                        <span class="date">{{ item.date }}</span>
                     </template>
                 </List>
             </Card>
+            <!-- 完成的列表 -->
             <Card class="completed">
                 <template #header>
                     <span style="color: #111">已完成</span>
                 </template>
-                <List v-bind:items="completed">
+                <List v-bind:items="completed" v-bind:aPadding="'3rem 1rem'">
                     <template v-slot:item="{ item }">
-                        <div style="display: flex">
+                        <div class="group-title" >
                             <CheckBox></CheckBox>
                             <span style="color: #333">{{ item.content }}</span>
                         </div>
-                        <span>{{ item.date }}</span>
+                        <span class="date">{{ item.date }}</span>
                     </template>
                 </List>
             </Card>
         </div>
-        <Card class="addition" v-on:blur="hidden" v-if="isShowAddition" v-on:click="show">
+        <!-- addition -->
+        <div>
+            <Card class="addition"  v-if="isShowAddition" >
             <div class="options">
                 <div class="option">
                     <i class="fa fa-list-alt" aria-hidden="true"></i>
@@ -46,6 +52,8 @@
                 </div>
             </div>
         </Card>
+        </div>
+        
         
         
     </div>
@@ -100,6 +108,7 @@ export default {
             this.isShowAddition = false;
         },
         show: function () {
+            console.log(123);
             this.isShowAddition = true;
         },
     },
@@ -114,15 +123,16 @@ export default {
 }
 .header {
     color: #222;
-    padding: 1rem 2rem;
+    padding: 1rem 0.5rem;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 1rem;
 }
 .header i {
     font-size: 3rem;
 }
 .body {
-    padding: 0.5rem 2rem;
+    padding: 0.5rem 0.5rem;
 }
 .completed,
 .completing {
@@ -130,10 +140,23 @@ export default {
     border-radius: 1rem;
     border: none;
     padding: 1rem 1.5rem;
+    li {
+        padding: 1rem !important;
+    }
+    @aPadding-tb: 1;
+    @aPadding-lr: 1;
+    .group-title {
+        // display: flex;
+        padding: @aPadding-tb*1rem @aPadding-lr*1rem;
+    }
+    .date {
+        font-size: 1rem;
+    }
     span {
-        font-size: 2.1rem;
-        line-height: 3rem;
-        margin-left: 1rem;
+        font-size: 2.7rem;
+        line-height: 5rem;
+        margin-left: 2rem;
+        padding: @aPadding-tb*1rem @aPadding-lr*1rem;
     }
 }
 .completed {
@@ -147,8 +170,9 @@ export default {
     right: 1rem;
 }
 .options {
-    padding: 1rem;
+    padding: 0.5rem;
     .option {
+        padding: 1rem;
         @font: 2;
         font-size: @font*1rem;
         span {

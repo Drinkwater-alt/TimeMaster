@@ -1,10 +1,10 @@
 <template>
-    <i
-        class="fa"
-        v-bind:class="{ 'fa-square-o': check, 'fa-check-square-o': !check }"
-        aria-hidden="true"
-        v-on:click="change"
-    ></i>
+        <i
+            class="fa"
+            v-bind:class="{ 'fa-square-o': check, 'fa-check-square-o': !check }"
+            aria-hidden="true"
+            v-on:click="change"
+        ></i>
 </template>
 
 <script>
