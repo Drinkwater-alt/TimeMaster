@@ -48,7 +48,9 @@ export default {
   methods: {
 
   },
-  props: ['info'],// { iconName: "#icon-youxi", title: "Play", finish: true, },
+  props: ['info'],
+  // { iconName: "#icon-youxi", title: "Play", finish: true,type:"onceADay|quantityADay",dayTargetCount:1,
+  // countUnit:"次",dayCircle:"永远|X天",title:"每天进步一点点",inspire:"",dayLasts:'',startDay:''},
   data: function () {
     return {
       //   iconName: "#icon-yishu",

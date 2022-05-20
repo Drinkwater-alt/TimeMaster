@@ -6,6 +6,7 @@ export { //很关键
 }
 
 function getTaskItems(year, month, day) {
+    return this.$store.state.dingItems;
       items = [
         {
           idx: 0,

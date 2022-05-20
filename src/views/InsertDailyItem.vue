@@ -146,7 +146,7 @@
         type="primary"
         size="large"
         style="position: fixed;bottom:3rem;width:95vw;"
-        @click="firstStepFinish()"
+        @click="insertItem()"
       >
         <p style="font-size:2.25rem;">保存</p>
       </Button>
@@ -252,6 +252,7 @@ export default {
   },
   data: function () {
     return {
+      activeDays: 127,
       showTargetBoard: false,
       showSelectDayBoard: false,
       showCustomUnit: false,
@@ -363,6 +364,12 @@ export default {
       this.firstStepFinished = true;
     }, selectDay(idx) {
       this.days[idx].select = !this.days[idx].select;
+      if (this.days[idx].select) {
+        var temp = this.activeDays;
+        this.activeDays = (temp | (1 << idx));
+      } else {
+        this.activeDays &= ~(1 << idx);
+      }
     }, changeUnit(val) {
       if (val == '自定义') {
         this.showCustomUnit = true;
@@ -428,6 +435,33 @@ export default {
       }
 
       this.showSelectDayBoard = false;
+    }, insertItem() {
+      var item = {};
+      item.iconName = this.currentIconName;
+      item.title = this.name;
+      item.finish = false;
+      item.type = this.targetBoard.type;
+      item.dayTargetCount = this.targetBoard.dayTargetCount;
+      item.countUnit = this.targetBoard.countUnit;
+      item.dayCircle = this.selectDayBoard.dayCircle;
+      item.inspire = this.inspire;
+
+      item.dayLasts = item.dayCircle;
+      if (item.dayCircle != "永远") {
+        var s = item.dayCircle; var idx = 0; var num = 0;
+        while (idx < s.length && s[idx] >= '0' && s[idx] <= '9') {
+          num = num * 10 + (s[idx] - '0');
+          idx += 1;
+        }
+        item.dayLasts = num;
+      }
+
+      item.startDay = new Date();
+      item.activeDays = this.activeDays;
+
+      console.log(item);
+      // { iconName: "#icon-youxi", title: "Play", finish: true,type:"onceADay|quantityADay",dayTargetCount:1,
+      // countUnit:"次",dayCircle:"永远|X天",title:"每天进步一点点",inspire:"",dayLasts:'',startDay:'',activeDays:(1|2|4|8)},
     }
   }
 
