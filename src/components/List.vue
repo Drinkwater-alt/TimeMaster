@@ -1,10 +1,11 @@
 <template>
-    <ul class="list-group">
+    <ul class="list-group" >
         <li 
             v-for="(item,index) in items"
             v-bind:key="index"
+            @click="pushIndex(index)"
         >
-            <slot name='item' v-bind:item="item">
+            <slot name='item' v-bind:item="item" >
                 {{item}}
             </slot>
         </li>
@@ -13,7 +14,12 @@
 
 <script>
 export default {
-    props:['items']
+    props:['items'],
+    methods:{
+        pushIndex(index){
+            this.$emit('getIndex',index);
+        }
+    }
 }
 </script>
 

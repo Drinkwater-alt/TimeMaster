@@ -113,29 +113,54 @@ var inspireWords = [
     '你所愿得都终将实现',
     '认真对待一切'
 ];
-// export default class DataBase{ //很关键
-  
-// }
 
-// export default class DataBase {
 
-//     // 此处定义数据
-//     icons = [];
-//     plan = [
-//         {
-//             date: '123123',
-//             title: '下衣服'
-//         },
-//         {
-//             date: '123123',
-//             title: 'xxx'
-//         }
-//     ];
+export default class DataBase {
+
+    // 此处定义数据
+    static plan=[
+        {
+            content: "整理",
+            date: "2022-5-13",
+        },
+        {
+            content: "数据分离",
+            date: "2022-5-13",
+        },
+        {
+            content: "功能实现",
+            date: "2022-5-13",
+        },
+        {
+            content: "α测试",
+            date: "2022-5-13",
+        },
+        {
+            content: "β测试",
+            date: "2022-5-13",
+        },
+    ]
+    static completed = [
+        {
+            content: "Ding总体布局",
+            date: "2022-5-15",
+        },
+        {
+            content: "Pomodoro总体布局",
+            date: "2022-5-14",
+        },
+        {
+            content: "TODOLIST总体布局",
+            date: "2022-5-14",
+        },
+        {
+            content: "TimeMaster总体布局",
+            date: "2022-5-13",
+        },
+    ]
     
 
-    
-
-// }
+}
 
 
 // 然后在页面文件里面 import DataBase from './data/data.js' 

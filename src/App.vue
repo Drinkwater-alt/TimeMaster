@@ -18,12 +18,6 @@
 <script>
 export default {
     name: "app",
-    data() {
-    },
-
-    methods: {},
-    watch: {
-    },
 };
 </script>
 

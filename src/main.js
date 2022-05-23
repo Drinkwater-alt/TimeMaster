@@ -17,12 +17,14 @@ import './assets/font-awesome-4.7.0/css/font-awesome.min.css'
 
 //使用iview2
 //http://v1.iviewui.com/docs/guide/start
-import {  Message } from 'iview';
+import {  Message,Button,Drawer } from 'iview';
 import 'iview/dist/styles/iview.css'
 import 'view-design/dist/styles/iview.css';
 
 import ViewUI from 'view-design';
 Vue.use(ViewUI);
+Vue.use(Button);
+Vue.use(Drawer)
 
 
 Vue.prototype.$Message = Message

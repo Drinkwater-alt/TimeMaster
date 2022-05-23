@@ -1,6 +1,5 @@
 <template>
     <div v-on:click="hidden">
-        <add-button class="addbutton"></add-button>
         <!-- 头部 -->
         <div class="header">
             <span>TODOLIST</span>
@@ -11,11 +10,11 @@
         <!-- 主体 -->
         <div class="body">
             <!-- 未完成的列表 -->
-            <Card class="completing">
-                <List v-bind:items="plan">
+            <Card class="completing" v-if="ShowCompletingPanel">
+                <List v-bind:items="plan" @getIndex='achieve'>
                     <template v-slot:item="{ item }">
                         <div class="group-title">
-                            <CheckBox></CheckBox>
+                            <i class="fa fa-square-o"></i>
                             <span style="color: #333">{{ item.content }}</span>
                         </div>
                         <span class="date">{{ item.date }}</span>
@@ -23,14 +22,14 @@
                 </List>
             </Card>
             <!-- 完成的列表 -->
-            <Card class="completed">
+            <Card class="completed" v-if="ShowCompletedPanel" v-show="isShowCompletedPanel">
                 <template #header>
                     <span style="color: #111">已完成</span>
                 </template>
-                <List v-bind:items="completed" v-bind:aPadding="'3rem 1rem'">
+                <List v-bind:items="completed" v-bind:aPadding="'3rem 1rem'" @getIndex='shift'>
                     <template v-slot:item="{ item }">
                         <div class="group-title" >
-                            <CheckBox></CheckBox>
+                                <i class="fa fa-check-square-o" aria-hidden="true"></i>
                             <span style="color: #333">{{ item.content }}</span>
                         </div>
                         <span class="date">{{ item.date }}</span>
@@ -41,25 +40,34 @@
         <!-- addition -->
         <div>
             <Card class="addition"  v-if="isShowAddition" >
-            <div class="options">
-                <div class="option">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i>
-                    <span>隐藏已完成</span>
+                <div class="options">
+                    <div class="option" @click="hideCompletedPanel">
+                        <i class="fa fa-list-alt" aria-hidden="true"></i>
+                        <span>隐藏已完成</span>
+                    </div>
+                    <div class="option">
+                        <i class="fa fa-sort-amount-asc" aria-hidden="true"></i></i>
+                        <span>排序</span>
+                    </div>
                 </div>
-                <div class="option">
-                    <i class="fa fa-sort-amount-asc" aria-hidden="true"></i></i>
-                    <span>排序</span>
-                </div>
-            </div>
-        </Card>
+            </Card>
         </div>
-        
-        
+
+        <!-- 添加时候的抽屉 -->
+        <Drawer class="drawer" title="添加一个计划吧" placement="bottom" :closable="false" v-model="isOpenDrawer" height='15'>
+
+            <input type="text" class="input" placeholder="准备做什么?"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+
+            
+        </Drawer>
+                <!-- 添加按钮 -->
+        <AddButton class="addbutton" @click.native="isOpenDrawer = true"></AddButton>
         
     </div>
 </template>
 
 <script>
+import DataBase from "../data/data";
 import AddButton from "../components/AddButton.vue";
 import List from "../components/List.vue";
 import Card from "../components/Card.vue";
@@ -73,34 +81,17 @@ export default {
                     content: "窟窿",
                     date: "2022-5-13",
                 },
-                {
-                    content: "123",
-                    date: "2022-5-13",
-                },
-                {
-                    content: "123",
-                    date: "2022-5-13",
-                },
-                {
-                    content: "123",
-                    date: "2022-5-13",
-                },
-                {
-                    content: "123",
-                    date: "2022-5-13",
-                },
             ],
             completed: [
                 {
                     content: "窟窿",
                     date: "2022-5-13",
                 },
-                {
-                    content: "123",
-                    date: "2022-5-13",
-                },
             ],
             isShowAddition: false,
+            isShowCompletedPanel: true,
+            isOpenDrawer: false,
+            value3: false,
         };
     },
     methods: {
@@ -108,9 +99,38 @@ export default {
             this.isShowAddition = false;
         },
         show: function () {
-            console.log(123);
             this.isShowAddition = true;
         },
+        achieve: function (index) {
+            console.log(index);
+            // this.plan[index].date 今日完成时间
+            this.completed.unshift(this.plan[index]);
+            this.plan.splice(index, 1);
+        },
+        shift: function (index) {
+            console.log(index);
+            // this.plan[index].date 今日完成时间
+            this.plan.unshift(this.completed[index]);
+            this.completed.splice(index, 1);
+        },
+        hideCompletedPanel: function () {
+            this.isShowCompletedPanel = !this.isShowCompletedPanel;
+        },
+    },
+    computed: {
+        ShowCompletingPanel: function () {
+            if (this.plan.length == 0) return false;
+            return true;
+        },
+        ShowCompletedPanel: function () {
+            if (this.completed.length == 0) return false;
+            return true;
+        },
+    },
+    mounted: function () {
+        console.log(DataBase.plan);
+        this.plan = DataBase.plan;
+        this.completed = DataBase.completed;
     },
 };
 </script>
@@ -153,8 +173,8 @@ export default {
         font-size: 1rem;
     }
     span {
-        font-size: 2.7rem;
-        line-height: 5rem;
+        font-size: 2rem;
+        line-height: 2rem;
         margin-left: 2rem;
         padding: @aPadding-tb*1rem @aPadding-lr*1rem;
     }
@@ -182,6 +202,19 @@ export default {
         i {
             padding: 0.5rem;
             text-align: center;
+        }
+    }
+}
+.drawer { 
+    text-align: justify;
+    .input {
+        border:#fff;
+        width: 40rem;
+        & + i {
+            color: #74b9ff;
+            font-size: 3rem;
+            margin-right: 3rem;
+            text-align: right;
         }
     }
 }
