@@ -16,8 +16,7 @@ import './assets/css/GlobalStyle.css'
 import './assets/font-awesome-4.7.0/css/font-awesome.min.css'
 //添加Date Format 时间格式化函数
 import './utils/DateFormat'
-import vueTouch from 'vue-touch'
-Vue.use(vueTouch, {name:'v-touch'})
+
 //使用iview2
 //http://v1.iviewui.com/docs/guide/start
 import {  Message,Button,Drawer } from 'iview';

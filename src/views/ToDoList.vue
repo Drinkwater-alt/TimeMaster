@@ -13,11 +13,14 @@
             <Card class="completing" v-if="ShowCompletingPanel">
                 <List v-bind:items="plan" @getIndex='achieve'>
                     <template v-slot:item="{ item }">
-                        <div class="group-title">
-                            <i class="fa fa-square-o"></i>
-                            <span style="color: #333">{{ item.content }}</span>
+                        <div class="group" tag='div' @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend(item.id)'>
+                            <div class="title">
+                                <i class="fa fa-square-o"></i>
+                                <span style="color: #333">{{ item.content }}</span>
+                            </div>
+                            <span class="date">{{ item.date }}</span>
                         </div>
-                        <span class="date">{{ item.date }}</span>
+                        
                     </template>
                 </List>
             </Card>
@@ -28,11 +31,13 @@
                 </template>
                 <List v-bind:items="completed" v-bind:aPadding="'3rem 1rem'" @getIndex='shift'>
                     <template v-slot:item="{ item }">
-                        <div class="group-title">
-                                <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                            <span style="color: #333">{{ item.content }}</span>
+                        <div class="group" @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend(item.id)' >
+                            <div class="title">
+                                <i class="fa fa-check-square-o"></i>
+                                <span style="color: #333">{{ item.content }}</span>
+                            </div>
+                            <span class="date">{{ item.date }}</span>
                         </div>
-                        <span class="date">{{ item.date }}</span>
                     </template>
                 </List>
             </Card>
@@ -125,6 +130,8 @@ export default {
                 return;
             }
             let plan = {
+                // 接入后端后，就不需要这个了
+                id:new Date().valueOf(),
                 content: input.value,
                 date: Date.format("yyyy-mm-dd", new Date()),
             };
@@ -133,11 +140,32 @@ export default {
 
             //清空输入框
             input.value = "";
-            this.isOpenDrawer=false
+            this.isOpenDrawer = false;
         },
-        test:function(e){
+        touchstart(e) {
+            this.startX = e.touches[0].clientX;
+            this.startY = e.touches[0].clientY;
+        },
+        touchmove(e) {
+            this.moveX = e.touches[0].clientX;
+            this.moveY = e.touches[0].clientY;
+            this.startX - this.moveX <= 0
+                ? (this.slideRight = true)
+                : (this.slideRight = false);
+        },
+        touchend(e) {
+            console.log(this.slideRight);
+            if(this.slideRight==null) return;
             console.log(e)
-        }
+            // 左右移动的事件
+            if(this.slideRight){
+            }else{
+
+            }
+
+            //结束处理  
+            this.slideRight = null;
+        },
     },
     computed: {
         ShowCompletingPanel: function () {
@@ -189,19 +217,23 @@ export default {
     }
     @aPadding-tb: 1;
     @aPadding-lr: 1;
-    .group-title {
-        // display: flex;
-        padding: @aPadding-tb*1rem @aPadding-lr*1rem;
-    }
-    .date {
-        font-size: 1rem;
-        line-height: 5rem;
-    }
-    span {
-        font-size: 2rem;
-        line-height: 2rem;
-        margin-left: 2rem;
-        padding: @aPadding-tb*1rem @aPadding-lr*1rem;
+    .group {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        overflow:hidden;
+        .title {
+            span {
+                font-size: 2rem;
+                line-height: 2rem;
+                margin-left: 2rem;
+                padding: @aPadding-tb*1rem @aPadding-lr*1rem;
+            }
+        }
+        .date {
+            font-size: 1rem;
+            line-height: 5rem;
+        }
     }
 }
 .completed {

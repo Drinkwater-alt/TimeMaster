@@ -120,40 +120,49 @@ export default class DataBase {
     // 此处定义数据
     static plan=[
         {
+            id:1,
             content: "整理",
             date: "2022-05-13",
         },
         {
+            id:2,
             content: "数据分离",
             date: "2022-05-13",
         },
         {
+            id:3,
             content: "功能实现",
             date: "2022-05-13",
         },
         {
+            id:4,
             content: "α测试",
             date: "2022-05-13",
         },
         {
+            id:5,
             content: "β测试",
             date: "2022-05-13",
         },
     ]
     static completed = [
         {
+            id:6,
             content: "Ding总体布局",
             date: "2022-05-15",
         },
         {
+            id:7,
             content: "Pomodoro总体布局",
             date: "2022-05-14",
         },
         {
+            id:8,
             content: "TODOLIST总体布局",
             date: "2022-05-14",
         },
         {
+            id:9,
             content: "TimeMaster总体布局",
             date: "2022-05-13",
         },
