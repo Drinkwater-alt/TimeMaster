@@ -15,6 +15,8 @@ import './utils/rem'
 import './assets/css/GlobalStyle.css'
 import './assets/font-awesome-4.7.0/css/font-awesome.min.css'
 
+import './utils/DateFormat'
+
 //使用iview2
 //http://v1.iviewui.com/docs/guide/start
 import {  Message,Button,Drawer } from 'iview';

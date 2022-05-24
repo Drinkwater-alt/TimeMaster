@@ -4,17 +4,15 @@
     background-color: rgb(239, 244, 255);
 }
 .router {
-    position: absolute;
-    top: 2%;
-    height: 90%;
+    height: 92%;
     width: 94%;
-    margin-left: 3%;
+    padding: 1rem;
+    padding-top: 2rem;
+    margin: 0 auto;
 }
 .navbar {
-    position: absolute;
-    bottom: 0;
     width: 100%;
-    height: 2.8em;
+    height: 8%;
 }
 .nav {
     display: flex;
@@ -66,9 +64,8 @@
 
 <template>
     <div class="container">
-        <transition :name="animate">
-            <router-view class="router" />
-        </transition>
+        
+        <router-view class="router" />
         <div class="navbar">
             <div class="nav">
                 <router-link
@@ -87,6 +84,7 @@
                 </router-link>
             </div>
         </div>
+        
     </div>
 </template>
 

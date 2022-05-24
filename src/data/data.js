@@ -121,41 +121,41 @@ export default class DataBase {
     static plan=[
         {
             content: "整理",
-            date: "2022-5-13",
+            date: "2022-05-13",
         },
         {
             content: "数据分离",
-            date: "2022-5-13",
+            date: "2022-05-13",
         },
         {
             content: "功能实现",
-            date: "2022-5-13",
+            date: "2022-05-13",
         },
         {
             content: "α测试",
-            date: "2022-5-13",
+            date: "2022-05-13",
         },
         {
             content: "β测试",
-            date: "2022-5-13",
+            date: "2022-05-13",
         },
     ]
     static completed = [
         {
             content: "Ding总体布局",
-            date: "2022-5-15",
+            date: "2022-05-15",
         },
         {
             content: "Pomodoro总体布局",
-            date: "2022-5-14",
+            date: "2022-05-14",
         },
         {
             content: "TODOLIST总体布局",
-            date: "2022-5-14",
+            date: "2022-05-14",
         },
         {
             content: "TimeMaster总体布局",
-            date: "2022-5-13",
+            date: "2022-05-13",
         },
     ]
     

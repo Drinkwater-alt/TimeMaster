@@ -28,7 +28,7 @@
                 </template>
                 <List v-bind:items="completed" v-bind:aPadding="'3rem 1rem'" @getIndex='shift'>
                     <template v-slot:item="{ item }">
-                        <div class="group-title" >
+                        <div class="group-title">
                                 <i class="fa fa-check-square-o" aria-hidden="true"></i>
                             <span style="color: #333">{{ item.content }}</span>
                         </div>
@@ -47,16 +47,17 @@
                     </div>
                     <div class="option">
                         <i class="fa fa-sort-amount-asc" aria-hidden="true"></i></i>
-                        <span>排序</span>
+                        <span>删除</span>
                     </div>
                 </div>
             </Card>
         </div>
 
         <!-- 添加时候的抽屉 -->
-        <Drawer class="drawer" title="添加一个计划吧" placement="bottom" :closable="false" v-model="isOpenDrawer" height='15'>
+        <Drawer class="drawer" title="添加一个计划吧" placement="bottom" :closable="false" v-model="isOpenDrawer" height='150'>
 
-            <input type="text" class="input" placeholder="准备做什么?"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+            <input type="text" class="input" placeholder="准备做什么?" ref='plan'>
+            <i class="fa fa-paper-plane" aria-hidden="true" @click="addPlan"></i>
 
             
         </Drawer>
@@ -71,9 +72,9 @@ import DataBase from "../data/data";
 import AddButton from "../components/AddButton.vue";
 import List from "../components/List.vue";
 import Card from "../components/Card.vue";
-import CheckBox from "../components/CheckBox.vue";
+
 export default {
-    components: { AddButton, List, Card, CheckBox },
+    components: { AddButton, List, Card },
     data() {
         return {
             plan: [
@@ -116,6 +117,27 @@ export default {
         hideCompletedPanel: function () {
             this.isShowCompletedPanel = !this.isShowCompletedPanel;
         },
+        addPlan: function () {
+            let input = this.$refs.plan;
+            console.log(input);
+            // 如果空就不添加进去
+            if (input.value == "") {
+                return;
+            }
+            let plan = {
+                content: input.value,
+                date: Date.format("yyyy-mm-dd", new Date()),
+            };
+            console.log(Date.format("yyyy-mm-dd", new Date()));
+            this.plan.unshift(plan);
+
+            //清空输入框
+            input.value = "";
+            this.isOpenDrawer=false
+        },
+        test:function(e){
+            console.log(e)
+        }
     },
     computed: {
         ShowCompletingPanel: function () {
@@ -138,8 +160,8 @@ export default {
 <style lang="less" scoped>
 .addbutton {
     position: absolute;
-    right: 0.5rem;
-    bottom: 0.3rem;
+    right: 2rem;
+    bottom: 10rem;
 }
 .header {
     color: #222;
@@ -153,6 +175,8 @@ export default {
 }
 .body {
     padding: 0.5rem 0.5rem;
+    overflow: scroll;
+    height: 92%;
 }
 .completed,
 .completing {
@@ -171,6 +195,7 @@ export default {
     }
     .date {
         font-size: 1rem;
+        line-height: 5rem;
     }
     span {
         font-size: 2rem;
@@ -183,11 +208,11 @@ export default {
     margin-top: 2rem;
 }
 .addition {
-    width: 27rem;
+    width: 25rem;
     background-color: white;
     position: absolute;
-    top: 2rem;
-    right: 1rem;
+    top: 0rem;
+    right: 0rem;
 }
 .options {
     padding: 0.5rem;
@@ -205,15 +230,15 @@ export default {
         }
     }
 }
-.drawer { 
+.drawer {
     text-align: justify;
     .input {
-        border:#fff;
-        width: 40rem;
+        border: #fff;
+        width: 85%;
         & + i {
             color: #74b9ff;
             font-size: 3rem;
-            margin-right: 3rem;
+            margin-left: 3rem;
             text-align: right;
         }
     }
