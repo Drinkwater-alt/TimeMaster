@@ -13,12 +13,15 @@
             <Card class="completing" v-if="ShowCompletingPanel">
                 <List v-bind:items="plan" @getIndex='achieve'>
                     <template v-slot:item="{ item }">
-                        <div class="group" tag='div' @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend(item.id)'>
-                            <div class="title">
-                                <i class="fa fa-square-o"></i>
-                                <span style="color: #333">{{ item.content }}</span>
+                        <div style="overflow:hidden;width:100%;display:flex">
+                            <div class="group" @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend' >
+                                <div class="title">
+                                    <i class="fa fa-square-o"></i>
+                                    <span style="color: #333">{{ item.content }}</span>
+                                </div>
+                                <span class="date">{{ item.date }}</span>
                             </div>
-                            <span class="date">{{ item.date }}</span>
+                            <i class="fa fa-trash deleteButton" aria-hidden="true"></i>
                         </div>
                         
                     </template>
@@ -31,13 +34,16 @@
                 </template>
                 <List v-bind:items="completed" v-bind:aPadding="'3rem 1rem'" @getIndex='shift'>
                     <template v-slot:item="{ item }">
-                        <div class="group" @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend(item.id)' >
-                            <div class="title">
-                                <i class="fa fa-check-square-o"></i>
-                                <span style="color: #333">{{ item.content }}</span>
+                        <div style="overflow:hidden;width:100%">
+                            <div class="group" @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend(item.id)' >
+                                <div class="title">
+                                    <i class="fa fa-check-square-o"></i>
+                                    <span style="color: #333">{{ item.content }}</span>
+                                </div>
+                                <span class="date">{{ item.date }}</span>
                             </div>
-                            <span class="date">{{ item.date }}</span>
                         </div>
+                        
                     </template>
                 </List>
             </Card>
@@ -131,7 +137,7 @@ export default {
             }
             let plan = {
                 // 接入后端后，就不需要这个了
-                id:new Date().valueOf(),
+                id: new Date().valueOf(),
                 content: input.value,
                 date: Date.format("yyyy-mm-dd", new Date()),
             };
@@ -155,15 +161,14 @@ export default {
         },
         touchend(e) {
             console.log(this.slideRight);
-            if(this.slideRight==null) return;
-            console.log(e)
+            if (this.slideRight == null) return;
+            console.log(e.target);
             // 左右移动的事件
-            if(this.slideRight){
-            }else{
-
+            if (this.slideRight) {
+            } else {
             }
 
-            //结束处理  
+            //结束处理
             this.slideRight = null;
         },
     },
@@ -219,10 +224,16 @@ export default {
     @aPadding-lr: 1;
     .group {
         width: 100%;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
         display: flex;
         justify-content: space-between;
-        overflow:hidden;
+        // margin-left: -10rem;
         .title {
+            display: flex;
+            i{
+                line-height: 4rem;
+            }
             span {
                 font-size: 2rem;
                 line-height: 2rem;
@@ -231,9 +242,19 @@ export default {
             }
         }
         .date {
-            font-size: 1rem;
-            line-height: 5rem;
+            font-size: 2rem;
+            line-height: 3.6rem;
         }
+    }
+    .deleteButton {
+        // display: inline-block;
+        margin-right: -10rem;
+        margin-left: 5rem;
+        color: #d63031;
+        line-height: 5rem;
+        text-align: center;
+        font-size: 3rem;
+
     }
 }
 .completed {
