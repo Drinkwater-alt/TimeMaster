@@ -1,15 +1,15 @@
 <template>
-    <ul class="list-group">
+    <transition-group name="list" tag="ul" class="list-group">
         <li
             v-for="(item, index) in items"
-            v-bind:key="index"
+            v-bind:key="item"
             @click="pushIndex(index)"
         >
             <slot name="item" v-bind:item="item">
                 {{ item }}
             </slot>
         </li>
-    </ul>
+    </transition-group>
 </template>
 
 <script>
@@ -34,6 +34,15 @@ export default {
         &:last-child {
             border-bottom: none;
         }
+    }
+    .list-enter-active,
+    .list-leave-active {
+        transition: all 1s;
+    }
+    .list-enter,
+    .list-leave-active {
+        opacity: 0;
+        transform: translateX(30px);
     }
 }
 </style>

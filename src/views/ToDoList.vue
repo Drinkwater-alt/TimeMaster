@@ -11,17 +11,17 @@
         <div class="body">
             <!-- 未完成的列表 -->
             <Card class="completing" v-if="ShowCompletingPanel">
-                <List v-bind:items="plan" @getIndex='achieve'>
+                <List v-bind:items="plan">
                     <template v-slot:item="{ item }">
                         <div style="overflow:hidden;width:100%;display:flex">
-                            <div class="group" @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend' >
+                            <div class="group" :ref="item.id" @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend(item.id)'  >
                                 <div class="title">
-                                    <i class="fa fa-square-o"></i>
+                                    <i class="fa fa-square-o" @click='achieve(item.id)'></i>
                                     <span style="color: #333">{{ item.content }}</span>
                                 </div>
                                 <span class="date">{{ item.date }}</span>
                             </div>
-                            <i class="fa fa-trash deleteButton" aria-hidden="true"></i>
+                            <i class="fa fa-trash deleteButton" aria-hidden="true" @click="removePlan(item.id)"></i>
                         </div>
                         
                     </template>
@@ -32,18 +32,19 @@
                 <template #header>
                     <span style="color: #111">已完成</span>
                 </template>
-                <List v-bind:items="completed" v-bind:aPadding="'3rem 1rem'" @getIndex='shift'>
+                <List v-bind:items="completed" v-bind:aPadding="'3rem 1rem'">
                     <template v-slot:item="{ item }">
-                        <div style="overflow:hidden;width:100%">
-                            <div class="group" @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend(item.id)' >
+                        <div style="overflow:hidden;width:100%;display:flex">
+                            <div class="group" :ref="item.id" @touchstart='touchstart' @touchmove='touchmove' @touchend='touchend(item.id)'  >
                                 <div class="title">
-                                    <i class="fa fa-check-square-o"></i>
+                                    <i class="fa fa-check-square-o" @click="shift(item.id)"></i>
                                     <span style="color: #333">{{ item.content }}</span>
                                 </div>
                                 <span class="date">{{ item.date }}</span>
                             </div>
+                            <i class="fa fa-trash deleteButton" aria-hidden="true" @click="removeCompleted(item.id)"></i>
                         </div>
-                        
+
                     </template>
                 </List>
             </Card>
@@ -104,6 +105,7 @@ export default {
             isShowCompletedPanel: true,
             isOpenDrawer: false,
             value3: false,
+            isMoveLeft: false,
         };
     },
     methods: {
@@ -113,15 +115,26 @@ export default {
         show: function () {
             this.isShowAddition = true;
         },
-        achieve: function (index) {
-            console.log(index);
+        achieve: function (v) {
+            console.log(v);
             // this.plan[index].date 今日完成时间
+            let index = this.plan.indexOf(
+                this.plan.find((item) => {
+                    return item.id == v;
+                })
+            );
+            console.log("下标" + index + "的元素转移到completed");
             this.completed.unshift(this.plan[index]);
             this.plan.splice(index, 1);
         },
-        shift: function (index) {
-            console.log(index);
+        shift: function (v) {
             // this.plan[index].date 今日完成时间
+            let index = this.completed.indexOf(
+                this.completed.find((item) => {
+                    return item.id == v;
+                })
+            );
+            console.log("下标" + index + "的元素转移到plan");
             this.plan.unshift(this.completed[index]);
             this.completed.splice(index, 1);
         },
@@ -160,16 +173,41 @@ export default {
                 : (this.slideRight = false);
         },
         touchend(e) {
-            console.log(this.slideRight);
-            if (this.slideRight == null) return;
-            console.log(e.target);
             // 左右移动的事件
-            if (this.slideRight) {
+            if (this.slideRight == null||this.slideRight) {
+                console.log("左移动");
+                this.$refs[e].style.marginLeft = "";
             } else {
+                console.log("右移动");
+                this.$refs[e].style.marginLeft = "-10rem";
             }
 
             //结束处理
             this.slideRight = null;
+        },
+        removePlan(id) {
+            this.$refs[id].style.marginLeft=""
+            let index = this.plan.indexOf(
+                this.plan.find((item) => {
+                    return item.id == id;
+                })
+            );
+            if (this.plan != -1) {
+                this.plan.splice(index, 1);
+                console.log(index + "移除");
+            }
+        },
+        removeCompleted(id) {
+            this.$refs[id].style.marginLeft=""
+            let index = this.completed.indexOf(
+                this.completed.find((item) => {
+                    return item.id == id;
+                })
+            );
+            if (index != -1) {
+                this.completed.splice(index, 1);
+                console.log(index + "移除");
+            }
         },
     },
     computed: {
@@ -228,10 +266,10 @@ export default {
         padding-bottom: 1rem;
         display: flex;
         justify-content: space-between;
-        // margin-left: -10rem;
+        transition: margin .3s;
         .title {
             display: flex;
-            i{
+            i {
                 line-height: 4rem;
             }
             span {
@@ -254,7 +292,6 @@ export default {
         line-height: 5rem;
         text-align: center;
         font-size: 3rem;
-
     }
 }
 .completed {
