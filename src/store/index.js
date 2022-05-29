@@ -9,23 +9,30 @@ export default new Vuex.Store({
       {
         iconName: "#icon-youxi", finish: true, type: "onceADay|quantityADay", dayTargetCount: 1,
         countUnit: "次", dayCircle: "永远|X天", title: "每天进步一点点", inspire: "在TimeMaster里简单check每一天",
-        dayLasts:1,startDay:"",activeDays:(1|2|4|8),
+        dayLasts:1,startDay:"",activeDays:(1|2|4|8),days:0,finishDays:[],
       }
     ],
   },
   mutations: {
-    insertIntoDingItem(item) {
-      dingItems.push(item);
-    },
-    getDingItems(year,month,day) {
-      var d = new Date(year, month, day);
-      var items;
-      dingItems.forEach(item => {
-        if (item.activeDays & (1 << d.getDay())){
-          items.push(item);
+    insertIntoDingItem(state,item) {
+      state.dingItems.push(item);
+    }, convertFinish(state, info) {
+      // info = {idx,date}
+      var item = state.dingItems[info.idx];
+      var tarIdx = -1;
+
+      for (var i = 0; i < item.finishDays.length; i++){
+        if(info.date.getTime() == item.finishDays[i].getTime()){
+          tarIdx = i;
+          break;
         }
-      });
-      return items;
+      }
+
+      if (tarIdx != -1) {
+        item.finishDays.splice(tarIdx, 1);
+      } else {
+        item.finishDays.push(info.date);
+      }
     }
   },
   actions: {

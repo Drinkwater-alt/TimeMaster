@@ -1,9 +1,12 @@
 <template>
-  <div style="display:flex;background-color:rgba(0,0,0,0);width:90vw;height:2.5em;">
+  <div
+    :title="info.inspire"
+    style="display:flex;background-color:rgba(0,0,0,0);width:90vw;height:2.5em;"
+  >
     <!-- 图标 -->
     <svg
-      v-if="!info.finish"
-      @click="convertFinish(info.idx)"
+      v-if="!finish"
+      @click="convertFinish(info)"
       class="icon svg-icon"
       style="top:0;bottom:0;margin:auto;margin-left:2.5vw;margin-right:0vw;"
       aria-hidden="true"
@@ -12,7 +15,7 @@
     </svg>
     <svg
       v-else
-      @click="convertFinish(info.idx)"
+      @click="convertFinish(info)"
       class="miniIcon svg-icon"
       style="top:0;bottom:0;margin:auto;margin-left:2.5vw;margin-right:0vw;"
       aria-hidden="true"
@@ -27,8 +30,14 @@
 
     <!-- 右侧信息 -->
     <div style="display:block;margin-top:1vh;bottom:0;margin-right:4vw;">
-      <p style="font-size:15px;font-weight:520;color:#000000">{{info.days}}天</p>
-      <p style="font-size:10px">共坚持</p>
+      <div v-show="!finishTarget">
+        <p style="font-size:15px;font-weight:520;color:#000000">{{resisitDays}}天</p>
+        <p style="font-size:10px">共坚持</p>
+      </div>
+      <div v-show="finishTarget">
+        <p style="font-size:10px">共坚持{{resisitDays}}天</p>
+        <p style="font-size:15px;font-weight:520;color:#000000">已完成目标</p>
+      </div>
     </div>
   </div>
 
@@ -45,6 +54,10 @@
 import { items } from '../data/data.js';
 
 export default {
+  mounted: function () {
+    this.checkFinishTarget();
+
+  },
   methods: {
 
   },
@@ -53,12 +66,44 @@ export default {
   // countUnit:"次",dayCircle:"永远|X天",title:"每天进步一点点",inspire:"",dayLasts:'',startDay:''},
   data: function () {
     return {
+      finishTarget: false,
       //   iconName: "#icon-yishu",
       // title: "你好"
     }
   }, methods: {
-    convertFinish(idx) {
-      items[idx].finish = !items[idx].finish;
+    convertFinish(info) {
+      var idx = info.idx;
+      var date = info.dateInfo;
+      var param = { idx, date };
+      this.$store.commit('convertFinish', param)
+      this.checkFinishTarget();
+    }, checkFinishTarget() {
+      console.log("called");
+      var item = this.$store.state.dingItems[this.info.idx];
+      if (item.dayLasts == "永远") {
+        this.finishTarget = false;
+      } else if (item.finishDays.length < item.dayLasts) {
+        this.finishTarget = false;
+      } else {
+        this.finishTarget = true;
+      }
+    }
+  }, computed: {
+    finish() {
+      var item = this.$store.state.dingItems[this.info.idx];
+      var find = false;
+
+      for (var i = 0; i < item.finishDays.length; i++) {
+        if (item.finishDays[i].getTime() == this.info.dateInfo.getTime()) {
+          find = true;
+          break;
+        }
+      }
+      return find;
+    }, resisitDays() {
+      var item = this.$store.state.dingItems[this.info.idx];
+
+      return item.finishDays.length;
     }
   }
 };

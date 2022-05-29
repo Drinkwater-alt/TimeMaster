@@ -122,7 +122,7 @@
             <dailyItem :info="item"></dailyItem>
           </div>
         </div>-->
-        <List v-bind:items="items">
+        <List v-bind:items="items" :useKey="true">
           <template v-slot:item="{ item }">
             <div style="display: flex">
               <dailyItem :info="item"></dailyItem>
@@ -162,7 +162,7 @@ export default {
       this.dayItems.push(this.getDayInfo(i));
     }
 
-    this.items = getTaskItems(this.year, this.month, this.day);
+    this.items = this.getDingItems(this.year, this.month, this.day);
   },
   data: function () {
     return {
@@ -194,9 +194,7 @@ export default {
     };
   },
   methods: {
-    convertFinish(idx) {
-      this.items[idx].finish = !this.items[idx].finish;
-    },
+
     getDayInfo(idx) {
       var info = {};
       var year = this.year;
@@ -233,13 +231,29 @@ export default {
     swapSelect(idx, dayInfo) {
       this.show = false;
       this.selected = idx;
-      this.items = getTaskItems(dayInfo.year, dayInfo.month, dayInfo.day);
+      this.items = this.getDingItems(dayInfo.year, dayInfo.month, dayInfo.day);
       setTimeout(() => {
         this.show = true;
-      }, 500);
+      }, 10);
     },
     toInsertDailyItem() {
       this.$router.push('/InsertDailyItem');
+    }, getDingItems(year, month, day) {
+      var d = new Date(year, month, day);
+      console.log(d);
+      var items = [];
+      var idx = 0;
+      this.$store.state.dingItems.forEach(item => {
+        if (item.activeDays & (1 << d.getDay())) {
+          item.dateInfo = d;
+          item.idx = idx;
+          item.key = d + idx;
+          items.push(item);
+        }
+        idx += 1;
+      });
+      console.log(items);
+      return items;
     }
   },
 };

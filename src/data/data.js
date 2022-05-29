@@ -2,8 +2,22 @@
 export { //很关键
     getTaskItems,
     refreshSpireWords,
+    getDingItems,
     items
 }
+
+
+function getDingItems(year,month,day) {
+      var d = new Date(year, month, day);
+    var items;
+      this.$store.state.dingItems.forEach(item => {
+        if (item.activeDays & (1 << d.getDay())){
+          items.push(item);
+        }
+      });
+      return items;
+}
+    
 
 function getTaskItems(year, month, day) {
     return this.$store.state.dingItems;

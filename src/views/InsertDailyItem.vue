@@ -278,7 +278,7 @@ export default {
         customDay: 1
       },
       name: '每天进步一点点',
-      firstStepFinished: true,
+      firstStepFinished: false,
       inspire: '来TimeMaster里简单check每一天',
       currentIconName: "#icon-meizhuang",
       days: [
@@ -445,6 +445,8 @@ export default {
       item.countUnit = this.targetBoard.countUnit;
       item.dayCircle = this.selectDayBoard.dayCircle;
       item.inspire = this.inspire;
+      item.days = 0;
+      item.finishDays = [];
 
       item.dayLasts = item.dayCircle;
       if (item.dayCircle != "永远") {
@@ -459,7 +461,9 @@ export default {
       item.startDay = new Date();
       item.activeDays = this.activeDays;
 
-      console.log(item);
+      // console.log(item);
+      this.$store.commit('insertIntoDingItem', item);
+      this.$router.push('/ding');
       // { iconName: "#icon-youxi", title: "Play", finish: true,type:"onceADay|quantityADay",dayTargetCount:1,
       // countUnit:"次",dayCircle:"永远|X天",title:"每天进步一点点",inspire:"",dayLasts:'',startDay:'',activeDays:(1|2|4|8)},
     }
