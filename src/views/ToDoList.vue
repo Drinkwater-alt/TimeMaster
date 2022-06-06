@@ -154,7 +154,7 @@ export default {
                 content: input.value,
                 date: Date.format("yyyy-mm-dd", new Date()),
             };
-            console.log(Date.format("yyyy-mm-dd", new Date()));
+            console.log(plan);
             this.plan.unshift(plan);
 
             //清空输入框
@@ -174,7 +174,7 @@ export default {
         },
         touchend(e) {
             // 左右移动的事件
-            if (this.slideRight == null||this.slideRight) {
+            if (this.slideRight == null || this.slideRight) {
                 console.log("左移动");
                 this.$refs[e].style.marginLeft = "";
             } else {
@@ -186,7 +186,7 @@ export default {
             this.slideRight = null;
         },
         removePlan(id) {
-            this.$refs[id].style.marginLeft=""
+            this.$refs[id].style.marginLeft = "";
             let index = this.plan.indexOf(
                 this.plan.find((item) => {
                     return item.id == id;
@@ -198,7 +198,7 @@ export default {
             }
         },
         removeCompleted(id) {
-            this.$refs[id].style.marginLeft=""
+            this.$refs[id].style.marginLeft = "";
             let index = this.completed.indexOf(
                 this.completed.find((item) => {
                     return item.id == id;
@@ -222,8 +222,34 @@ export default {
     },
     mounted: function () {
         console.log(DataBase.plan);
-        this.plan = DataBase.plan;
-        this.completed = DataBase.completed;
+
+        if (
+            window.localStorage.getItem("planStorage") &&
+            window.localStorage.getItem("completedStorage")
+        ) {
+            let str = window.localStorage.getItem("planStorage");
+            console.log("获取的数据");
+            console.log(str);
+            console.log(JSON.parse(str));
+            this.plan = JSON.parse(str);
+            console.log(this.play);
+            this.completed = JSON.parse(
+                window.localStorage.getItem("completedStorage")
+            );
+        } else {
+            this.plan = DataBase.plan;
+            this.completed = DataBase.completed;
+        }
+    },
+    beforeDestroy() {
+        console.log("beforeDestroy函数执行了:");
+        console.log(this.plan);
+        let str1 = JSON.stringify(this.plan);
+        let str2 = JSON.stringify(this.completed);
+        console.log(str1);
+        console.log(str2);
+        window.localStorage.setItem("planStorage", str1);
+        window.localStorage.setItem("completedStorage", str2);
     },
 };
 </script>
@@ -266,7 +292,7 @@ export default {
         padding-bottom: 1rem;
         display: flex;
         justify-content: space-between;
-        transition: margin .3s;
+        transition: margin 0.3s;
         .title {
             display: flex;
             i {

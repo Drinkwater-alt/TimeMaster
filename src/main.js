@@ -19,14 +19,15 @@ import './utils/DateFormat'
 
 //使用iview2
 //http://v1.iviewui.com/docs/guide/start
-import {  Message,Button,Drawer } from 'iview';
+import { Message, Button, Drawer, TimePicker } from 'iview';
 import 'iview/dist/styles/iview.css'
 import 'view-design/dist/styles/iview.css';
 
 import ViewUI from 'view-design';
 Vue.use(ViewUI);
 Vue.use(Button);
-Vue.use(Drawer)
+Vue.use(Drawer);
+Vue.use(TimePicker);
 
 
 Vue.prototype.$Message = Message

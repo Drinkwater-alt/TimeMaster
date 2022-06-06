@@ -1,5 +1,8 @@
 <template>
-    <canvas id="clock" style="display: block; margin: 0 auto"> </canvas>
+    <div>
+        <canvas id="clock" style="display: block; margin: 0 auto;float:left"> </canvas>
+
+    </div>
 </template>
 
 <script>
@@ -40,7 +43,6 @@ export default {
             this.ctx.lineWidth = 7;
             this.ctx.strokeStyle = "rgb(55,87,247)";
             this.ctx.stroke();
-
             this.ctx.closePath();
 
             console.log("绘制完成");
@@ -70,7 +72,7 @@ export default {
         console.log(this.now);
         setTimeout(() => {
             this.draw();
-        }, 400);
+        }, 100);
     },
 };
 </script>
