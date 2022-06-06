@@ -270,16 +270,16 @@ export default {
             text-align: center;
         }
         canvas {
-            width: 300px;
-            height: 300px;
+            width: 45rem;
+            height: 45rem;
         }
         span {
             color: #222;
-            font-size: 50px;
+            font-size: 9rem;
             position: absolute;
             display: block;
-            left: 150px;
-            top: 150px;
+            left: 22.5rem;
+            top: 22.5rem;
             transform: translate(-50%, -50%);
         }
     }
