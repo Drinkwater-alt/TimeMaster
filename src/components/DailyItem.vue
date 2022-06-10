@@ -71,13 +71,16 @@ export default {
       // title: "你好"
     }
   }, methods: {
+    // 翻转打卡完成状态
     convertFinish(info) {
       var idx = info.idx;
       var date = info.dateInfo;
       var param = { idx, date };
       this.$store.commit('convertFinish', param)
       this.checkFinishTarget();
-    }, checkFinishTarget() {
+    },
+    // 查看目标是否已完成
+    checkFinishTarget() {
       console.log("called");
       var item = this.$store.state.dingItems[this.info.idx];
       if (item.dayLasts == "永远") {
@@ -89,10 +92,12 @@ export default {
       }
     }
   }, computed: {
+    // 计算目标是否已完成
     finish() {
       var item = this.$store.state.dingItems[this.info.idx];
       var find = false;
 
+      // 遍历完成列表，确认是否完成当天打卡项
       for (var i = 0; i < item.finishDays.length; i++) {
         if (item.finishDays[i].getTime() == this.info.dateInfo.getTime()) {
           find = true;
@@ -100,7 +105,9 @@ export default {
         }
       }
       return find;
-    }, resisitDays() {
+    },
+    // 获取打卡项完成天数
+    resisitDays() {
       var item = this.$store.state.dingItems[this.info.idx];
 
       return item.finishDays.length;

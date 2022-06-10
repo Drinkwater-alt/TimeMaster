@@ -1,5 +1,6 @@
 <template>
   <div style="height:100vh">
+    <!-- 插入页面一（命名，选取图片） -->
     <div
       style="display:flex;flex-direction:column;margin-left:.5em;margin-right:.5em"
       v-if="!firstStepFinished"
@@ -78,6 +79,7 @@
       </Button>
     </div>
 
+    <!-- 插入页面二 -->
     <div style="display:flex;flex-direction:column;margin-left:.5em;margin-right:.5em" v-else>
       <div style="display:flex;flex-direction:row;margin-top:1em">
         <Icon type="md-arrow-back" @click="back()" />
@@ -241,6 +243,7 @@ export default {
     dailyItem
   },
   mounted: function () {
+    // 为日期选择栏赋值
     for (var i = 1; i <= 7; i++) {
       this.sevenDays.push(i);
     }
@@ -252,14 +255,23 @@ export default {
   },
   data: function () {
     return {
+      // 使用前7个bit代表item应出现的日期,第x位置1代表其应该在七天中的第x天(从周日开始)显示,置0代表其不在第x天显示
       activeDays: 127,
+      // 使用v-if与样式绑定, 设true时弹出设置目标的面板
       showTargetBoard: false,
+      // 使用v-if与样式绑定, 设true时弹出选择打卡天数的面板，用户可以从预设天数中选择一项
       showSelectDayBoard: false,
+      // 与样式绑定，设true时弹出自定义打卡单位（默认为天）的面板
       showCustomUnit: false,
+      // 设true时隐藏目标设定面板
       hideTargetBoard: false,
+      // 设true时弹出自定义天数的面板，用户可以在合法天数任意设置
       showCustomDay: false,
+      // 打卡目标日期
       dayCircle: '永远',
+      // 目标类型，可以是当天完成打卡或是当天完成一定量
       targetText: '当天完成打卡',
+      // 目标设定面板参数
       targetBoard: {
         //选中的类型
         type: 'onceADay',
@@ -268,19 +280,31 @@ export default {
         quantityADay: false,
         // 当天完成一定量的话，每天完成的次数和单位
         dayTargetCount: 1, // 目标数量
+        // 目标单位
         countUnit: '次',
+        // 可选单位
         countUnits: ['次', '杯', '毫升', '分钟', '小时', '公里', '页', '自定义'],
+        // 用户自定义的单位
         customUnitInput: ''
       },
+      // 天数选择面板参数
       selectDayBoard: {
+        // 打卡目标日期
         dayCircle: '永远',
+        // 可选天数列表
         daySelects: ['永远', '7天', '21天', '30天', '100天', '365天', '自定义'],
+        // 用户自定义的天数
         customDay: 1
       },
+      // 打卡项名称
       name: '每天进步一点点',
+      // 设true时显示第二个界面
       firstStepFinished: false,
+      // 激励语
       inspire: '来TimeMaster里简单check每一天',
+      // 选中的图标
       currentIconName: "#icon-meizhuang",
+      // 影响activatedDays，选中后对应图标置蓝，否则置灰
       days: [
         { name: '日', select: true },
         { name: '一', select: true },
@@ -292,6 +316,7 @@ export default {
       ],
       sevenDays: [],
       thirtyDays: [],
+      // 图标列表
       icons: [
         { name: '#icon-meizhuang' },
         { name: '#icon-jiadian' },
@@ -349,20 +374,29 @@ export default {
 
     }
   }, methods: {
+    // 刷新激励语
     refreshSpireWords() {
       this.inspire = refreshSpireWords();
-    }, swapSelectIcon(idx) {
+    },
+    // 切换选择的图标
+    swapSelectIcon(idx) {
       this.currentIconName = this.icons[idx].name;
-    }, back() {
+    },
+    // 跳到上一个页面
+    back() {
       if (!this.firstStepFinished) {
         this.$router.back();
       } else {
         this.firstStepFinished = false;
       }
-    }, firstStepFinish() {
+    },
+    // 进行插入的下一步
+    firstStepFinish() {
       console.log("CHECK");
       this.firstStepFinished = true;
-    }, selectDay(idx) {
+    },
+    // 切换选中的日期
+    selectDay(idx) {
       this.days[idx].select = !this.days[idx].select;
       if (this.days[idx].select) {
         var temp = this.activeDays;
@@ -370,13 +404,17 @@ export default {
       } else {
         this.activeDays &= ~(1 << idx);
       }
-    }, changeUnit(val) {
+    },
+    // 改变选中的单位，如果选中的单位为自定义，呼出自定义单位面板
+    changeUnit(val) {
       if (val == '自定义') {
         this.showCustomUnit = true;
         this.hideTargetBoard = true;
         this.targetBoard.customUnitInput = '';
       }
-    }, cancelSetCustomUnit() {
+    },
+    // 重置自定义单位
+    cancelSetCustomUnit() {
       this.showCustomUnit = false;
       this.hideTargetBoard = false;
     }, confirmSetCustomUnit() {
@@ -398,7 +436,9 @@ export default {
       //关闭窗口
       this.showCustomUnit = false;
       this.hideTargetBoard = false;
-    }, confirmSetTarget() {
+    },
+    // 完成目标的设定，更新相关参数
+    confirmSetTarget() {
       console.log(this.targetBoard.countUnit);
 
       if (this.targetBoard.type == 'onceADay') {
@@ -415,18 +455,24 @@ export default {
       }
 
       this.showTargetBoard = false;
-    }, changeSelectDay(val) {
+    },
+    // 更改选中的天数，如果选中项为自定义，呼出自定义日期面板
+    changeSelectDay(val) {
       if (val == '自定义') {
         this.showCustomDay = true;
         this.selectDayBoard.customDay = 1;
       }
-    }, cancelSelectDay() {
+    },
+    // 关闭选中天数面板
+    cancelSelectDay() {
       if (this.selectDayBoard.dayCircle != '自定义') {
         this.showCustomDay = false;
       }
       // reset custom Day
       this.selectDayBoard.customDay = 1;
-    }, confirmSelectDay() {
+    },
+    // 确认选中天数，更新参数
+    confirmSelectDay() {
       if (this.selectDayBoard.dayCircle == '自定义') {
         this.dayCircle = this.selectDayBoard.customDay + "天";
       } else {
@@ -435,7 +481,9 @@ export default {
       }
 
       this.showSelectDayBoard = false;
-    }, insertItem() {
+    },
+    // 根据设定的参数将item放入store的state中
+    insertItem() {
       var item = {};
       item.iconName = this.currentIconName;
       item.title = this.name;
@@ -545,3 +593,4 @@ export default {
   height: 5.5rem;
 }
 </style>
+
