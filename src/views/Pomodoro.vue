@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- 头部 -->
         <div class="header">
             <span>Pomodoro</span>
             <!-- v-on:click="show" @click.stop="show" -->
@@ -14,6 +15,7 @@
         <Card class="body">
             <h4 class="title">专注</h4>
 
+            <!-- 时钟显示 -->
             <div>
                 <canvas
                     id="clock"
@@ -25,6 +27,8 @@
                 </canvas>
                 <span>{{ showTime }}</span>
             </div>
+            <!-- 四个按钮 开始 继续 暂停 结束 -->
+            <!-- 在未开始、暂停，倒计时三个状态有不同的组合显示 -->
             <Button
                 class="button"
                 type="primary"
@@ -58,6 +62,7 @@
                 >结束</Button
             >
         </Card>
+        <!-- 设置时间抽屉 -->
         <Drawer
             class="drawer"
             title="设置一个番茄时间"
@@ -90,13 +95,17 @@ export default {
     components: { Card, CountdownClock },
     data: function () {
         return {
+            // 抽屉是否打开
             isOpenDrawer: false,
+            // 默认开始时间
             noset: "00:25:00",
-            //因为生命周期第一次compute的时候在dom生成之前，所以draw函数中无法获取canvase对象，所以第一次不执行函数
+            //因为生命周期第一次计算属性（compute） 的时候在dom生成之前，所以draw函数中无法获取canvase对象，所以第一次不执行draw函数
+            // showtime计算属性 时间计算出来 以 MM:ss的时间显示 并且通过它来刷新时钟
             dynamicFunction: function () {},
         };
     },
     methods: {
+        // 四种状态 4个按钮不同的组合显示
         startFx() {
             this.$store.commit("switchStart", false);
             this.$store.commit("switchProgress", true);
@@ -118,6 +127,7 @@ export default {
             this.countDown(false);
             this.$store.commit("setTime", this.set);
         },
+        // 倒计时开始或结束 true 开始 false 停下
         countDown(flag) {
             if (flag) {
                 let interval = setInterval(() => {
@@ -138,6 +148,7 @@ export default {
                 clearInterval(this.interval);
             }
         },
+        //绘制时钟
         draw: function () {
             console.log("draw");
             const center = 300;
@@ -173,6 +184,7 @@ export default {
             ctx.stroke();
             ctx.closePath();
         },
+        // 设置时间
         addPlan: function () {
             const saveNoset = this.noset;
             let str = this.noset.split(":");
@@ -194,7 +206,9 @@ export default {
         this.dynamicFunction = this.draw;
     },
     watch: {},
+    //计算属性
     computed: {
+        // 时间格式化，重绘clock
         showTime: function () {
             this.dynamicFunction();
             let m = Math.floor(this.now / 60);
@@ -205,21 +219,27 @@ export default {
                 return m + ":" + s;
             }
         },
+        // 获取 timer对象
         interval: function () {
             return this.$store.state.countDownInfo.interval;
         },
+        //获取 设定时间 属性
         set: function () {
             return this.$store.state.countDownInfo.set;
         },
+        //获取 现在剩余的时间
         now: function () {
             return this.$store.state.countDownInfo.now;
         },
+        //获取 开始设定的时间
         start: function () {
             return this.$store.state.countDownInfo.start;
         },
+        //按钮进行状态
         progress: function () {
             return this.$store.state.countDownInfo.progress;
         },
+        //按钮暂停状态
         pause: function () {
             return this.$store.state.countDownInfo.pause;
         },

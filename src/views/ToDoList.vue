@@ -21,6 +21,7 @@
                                 </div>
                                 <span class="date">{{ item.date }}</span>
                             </div>
+                            <!-- 左滑抽屉 -->
                             <i class="fa fa-trash deleteButton" aria-hidden="true" @click="removePlan(item.id)"></i>
                         </div>
                         
@@ -42,6 +43,7 @@
                                 </div>
                                 <span class="date">{{ item.date }}</span>
                             </div>
+                            <!-- 左滑抽屉 -->
                             <i class="fa fa-trash deleteButton" aria-hidden="true" @click="removeCompleted(item.id)"></i>
                         </div>
 
@@ -49,7 +51,7 @@
                 </List>
             </Card>
         </div>
-        <!-- addition -->
+        <!-- addition 额外内容板块 -->
         <div>
             <Card class="addition"  v-if="isShowAddition" >
                 <div class="options">
@@ -89,32 +91,38 @@ export default {
     components: { AddButton, List, Card },
     data() {
         return {
+            // 计划列表还未完成
             plan: [
                 {
                     content: "窟窿",
                     date: "2022-5-13",
                 },
             ],
+            // 完成的列表
             completed: [
                 {
                     content: "窟窿",
                     date: "2022-5-13",
                 },
             ],
+            // 是否显示额外内容板块
             isShowAddition: false,
+            // 是否隐藏 已完成的列表
             isShowCompletedPanel: true,
+            // 是否打开添加计划抽屉
             isOpenDrawer: false,
-            value3: false,
-            isMoveLeft: false,
         };
     },
     methods: {
+        // 隐藏额外板块
         hidden: function () {
             this.isShowAddition = false;
         },
+        // 显示额外板块
         show: function () {
             this.isShowAddition = true;
         },
+        //完成计划
         achieve: function (v) {
             console.log(v);
             // this.plan[index].date 今日完成时间
@@ -127,6 +135,7 @@ export default {
             this.completed.unshift(this.plan[index]);
             this.plan.splice(index, 1);
         },
+        // 恢复计划，送完成列表中添加回 待完成
         shift: function (v) {
             // this.plan[index].date 今日完成时间
             let index = this.completed.indexOf(
@@ -138,9 +147,11 @@ export default {
             this.plan.unshift(this.completed[index]);
             this.completed.splice(index, 1);
         },
+        //隐藏完成列表
         hideCompletedPanel: function () {
             this.isShowCompletedPanel = !this.isShowCompletedPanel;
         },
+        //添加一个计划
         addPlan: function () {
             let input = this.$refs.plan;
             console.log(input);
@@ -161,6 +172,7 @@ export default {
             input.value = "";
             this.isOpenDrawer = false;
         },
+        ////////////左右滑特效实现
         touchstart(e) {
             this.startX = e.touches[0].clientX;
             this.startY = e.touches[0].clientY;
@@ -185,6 +197,8 @@ export default {
             //结束处理
             this.slideRight = null;
         },
+        ///////////////////////
+        //删除一个计划
         removePlan(id) {
             this.$refs[id].style.marginLeft = "";
             let index = this.plan.indexOf(
@@ -197,6 +211,7 @@ export default {
                 console.log(index + "移除");
             }
         },
+        //，或一个一完成的计划
         removeCompleted(id) {
             this.$refs[id].style.marginLeft = "";
             let index = this.completed.indexOf(
@@ -221,6 +236,7 @@ export default {
         },
     },
     mounted: function () {
+        //页面打开初始化，看是否本地浏览器中存有数据，没有就用默认的，如果有提取本地存有的数据
         console.log(DataBase.plan);
 
         if (
@@ -241,6 +257,7 @@ export default {
             this.completed = DataBase.completed;
         }
     },
+    //在卸载页面前保存数据
     beforeDestroy() {
         console.log("beforeDestroy函数执行了:");
         console.log(this.plan);
